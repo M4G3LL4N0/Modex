@@ -1,0 +1,37 @@
+import { NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
+import { runPrediction } from "@/lib/engine/predict";
+
+export async function POST(req: Request) {
+  const { content, user_id } = await req.json();
+
+  if (!content) {
+    return NextResponse.json({ error: "Missing content" }, { status: 400 });
+  }
+
+  // Store input
+  const { data: input } = await supabase
+    .from("inputs")
+    .insert([{ content, user_id }])
+    .select()
+    .single();
+
+  // Run prediction
+  const result = runPrediction(content);
+
+  // Store prediction
+  await supabase.from("predictions").insert([
+    {
+      input_id: input.id,
+      score: result.score,
+      confidence: result.confidence,
+      risk_level: result.risk_level,
+      recommendation: result.recommendation,
+    },
+  ]);
+
+  return NextResponse.json({
+    input,
+    prediction: result,
+  });
+}
