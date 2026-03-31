@@ -9,15 +9,18 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Missing content" }, { status: 400 });
   }
 
-  // Store input
+  // Generate embedding
+  const embedding = await createEmbedding(content);
+
+  // Store input with embedding
   const { data: input } = await supabase
     .from("inputs")
-    .insert([{ content, user_id }])
+    .insert([{ content, user_id, embedding }])
     .select()
     .single();
 
   // Run prediction
-  const result = runPrediction(content);
+  const result = await runPrediction(content);
 
   // Store prediction
   await supabase.from("predictions").insert([
