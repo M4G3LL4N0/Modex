@@ -19,8 +19,20 @@ export async function POST(req: Request) {
     .select()
     .single();
 
-  // Run prediction
-  const result = await runPrediction(content);
+  // Find similar past inputs
+  const similarInputs = await findSimilarInputs(embedding);
+
+  // Build context from similar inputs
+  const context = similarInputs
+    .map((input, i) => 
+      `Similar input #${i + 1}:\n` +
+      `Content: ${input.content}\n` +
+      `Outcome: ${input.outcome !== undefined ? (input.outcome ? 'Success' : 'Failure') : 'Unknown'}\n`
+    )
+    .join('\n');
+
+  // Run prediction with context
+  const result = await runPrediction(content, context);
 
   // Store prediction
   await supabase.from("predictions").insert([

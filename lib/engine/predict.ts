@@ -8,13 +8,20 @@ export type PredictionResult = {
   recommendation: string;
 };
 
-export async function runPrediction(input: string): Promise<PredictionResult> {
+export async function runPrediction(
+  input: string,
+  context?: string
+): Promise<PredictionResult> {
   // Create embedding for context
   const embedding = await createEmbedding(input);
   
   // Get structured decision from LLM
-  const context = `Input embedding vector: ${JSON.stringify(embedding)}`;
-  const result = await runLLMDecision(input, context);
+  const fullContext = [
+    `Input embedding vector: ${JSON.stringify(embedding)}`,
+    context,
+  ].filter(Boolean).join('\n\n');
+  
+  const result = await runLLMDecision(input, fullContext);
   
   return {
     score: result.score,
