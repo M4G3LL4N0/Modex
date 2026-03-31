@@ -1,3 +1,6 @@
+import { runLLMDecision } from "./llm";
+import { createEmbedding } from "./embedding";
+
 export type PredictionResult = {
   score: number;
   confidence: number;
@@ -5,32 +8,18 @@ export type PredictionResult = {
   recommendation: string;
 };
 
-// Simple v1 scoring engine (replace later with ML)
-export function runPrediction(input: string): PredictionResult {
-  const lengthScore = Math.min(input.length / 200, 1);
-
-  const keywordRisk =
-    input.includes("risk") || input.includes("uncertain") ? 0.3 : 0;
-
-  const score = Math.max(0.2, Math.min(0.9, lengthScore - keywordRisk));
-
-  const confidence = 0.6 + Math.random() * 0.3;
-
-  let risk_level: PredictionResult["risk_level"] = "low";
-  if (score < 0.4) risk_level = "high";
-  else if (score < 0.65) risk_level = "moderate";
-
-  const recommendation =
-    score > 0.7
-      ? "Proceed. Strong signal."
-      : score > 0.5
-      ? "Proceed with caution. Validate assumptions."
-      : "High risk. Re-evaluate before acting.";
-
+export async function runPrediction(input: string): Promise<PredictionResult> {
+  // Create embedding for context
+  const embedding = await createEmbedding(input);
+  
+  // Get structured decision from LLM
+  const context = `Input embedding vector: ${JSON.stringify(embedding)}`;
+  const result = await runLLMDecision(input, context);
+  
   return {
-    score,
-    confidence,
-    risk_level,
-    recommendation,
+    score: result.score,
+    confidence: result.confidence,
+    risk_level: result.risk_level,
+    recommendation: result.recommendation,
   };
 }
