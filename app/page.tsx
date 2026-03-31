@@ -342,7 +342,34 @@ export default function HomePage() {
               </p>
             </div>
 
-            <form className="rounded-[28px] border border-white/10 bg-[#0a0d15]/75 p-5 md:p-6">
+            <form 
+              action="/api/waitlist"
+              method="POST"
+              className="rounded-[28px] border border-white/10 bg-[#0a0d15]/75 p-5 md:p-6"
+              onSubmit={async (e) => {
+                e.preventDefault()
+                const formData = new FormData(e.currentTarget)
+                const email = formData.get('email')
+                
+                try {
+                  const response = await fetch('/api/waitlist', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email }),
+                  })
+                  
+                  if (response.ok) {
+                    alert('Thank you! We\'ll be in touch soon.')
+                  } else {
+                    throw new Error('Submission failed')
+                  }
+                } catch (error) {
+                  alert('Something went wrong. Please try again.')
+                }
+              }}
+            >
               <label
                 htmlFor="email"
                 className="text-[11px] uppercase tracking-[0.24em] text-white/44"
@@ -351,8 +378,10 @@ export default function HomePage() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="you@company.com"
+                required
                 className="mt-4 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white outline-none placeholder:text-white/28 focus:border-white/20"
               />
               <button
@@ -362,8 +391,7 @@ export default function HomePage() {
                 Join waitlist
               </button>
               <p className="mt-3 text-xs leading-6 text-white/42">
-                Fast launch version. Connect this form to Resend, ConvertKit,
-                Mailchimp, Supabase, or a simple API route next.
+                We'll notify you when early access is available.
               </p>
             </form>
           </div>
