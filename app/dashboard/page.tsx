@@ -3,26 +3,38 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
+type PredictionResult = {
+  score: number;
+  confidence: number;
+  risk_level: "low" | "moderate" | "high";
+  recommendation: string;
+};
+
+type PredictionInput = {
+  id: string;
+  content: string;
+};
+
 type Prediction = {
-  input: {
-    id: string;
-    content: string;
-  };
-  prediction: {
-    score: number;
-    confidence: number;
-    risk_level: string;
-    recommendation: string;
-  };
+  input: PredictionInput;
+  prediction: PredictionResult;
   outcome?: {
     success: boolean;
+    actual_outcome: string;
+    notes: string;
+    prediction_accuracy: number;
   };
 };
 
-type Stats = {
+type AnalyticsStats = {
   totalPredictions: number;
   avgScore: number;
   successRate: number;
+};
+
+type HistoryItem = Prediction & {
+  id: string;
+  created_at: string;
 };
 
 export default function DashboardPage() {
@@ -30,7 +42,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPrediction, setCurrentPrediction] = useState<Prediction | null>(null);
   const [history, setHistory] = useState<Prediction[]>([]);
-  const [stats, setStats] = useState({
+  const [stats, setStats] = useState<AnalyticsStats>({
     totalPredictions: 0,
     avgScore: 0,
     successRate: 0
@@ -38,22 +50,41 @@ export default function DashboardPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Calculate stats from history
-    const totalPredictions = history.length;
-    const totalScore = history.reduce((sum, item) => sum + item.prediction.score, 0);
-    const avgScore = totalPredictions > 0 ? totalScore / totalPredictions : 0;
-    
-    const successfulOutcomes = history.filter(item => 
-      item.outcome?.success === true
-    ).length;
-    const successRate = history.filter(item => item.outcome).length > 0 ?
-      (successfulOutcomes / history.filter(item => item.outcome).length) : 0;
+    const fetchHistory = async () => {
+      try {
+        const response = await fetch('/api/history');
+        if (!response.ok) throw new Error('Failed to fetch history');
+        const data = await response.json();
+        setHistory(data);
+      } catch (error) {
+        console.error('History fetch error:', error);
+      }
+    };
 
-    setStats({
-      totalPredictions,
-      avgScore,
-      successRate
-    });
+    fetchHistory();
+  }, []);
+
+  useEffect(() => {
+    const calculateStats = (history: HistoryItem[]): AnalyticsStats => {
+      const totalPredictions = history.length;
+      const totalScore = history.reduce((sum, item) => sum + item.prediction.score, 0);
+      const avgScore = totalPredictions > 0 ? totalScore / totalPredictions : 0;
+      
+      const outcomes = history.filter(item => item.outcome);
+      const successfulOutcomes = outcomes.filter(item => 
+        item.outcome?.success === true
+      ).length;
+      const successRate = outcomes.length > 0 ?
+        successfulOutcomes / outcomes.length : 0;
+
+      return {
+        totalPredictions,
+        avgScore,
+        successRate
+      };
+    };
+
+    setStats(calculateStats(history));
   }, [history]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,8 +109,37 @@ export default function DashboardPage() {
       setInput("");
     } catch (error) {
       console.error("Prediction error:", error);
+      alert("Failed to make prediction. Please try again.");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleOutcome = async (predictionId: string, success: boolean) => {
+    try {
+      const response = await fetch('/api/outcome', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          input_id: predictionId,
+          success,
+          actual_outcome: success ? 'Successful outcome' : 'Unsuccessful outcome'
+        }),
+      });
+
+      if (!response.ok) throw new Error('Failed to record outcome');
+
+      // Refresh history after outcome is recorded
+      const historyResponse = await fetch('/api/history');
+      if (historyResponse.ok) {
+        const updatedHistory = await historyResponse.json();
+        setHistory(updatedHistory);
+      }
+    } catch (error) {
+      console.error('Outcome error:', error);
+      alert('Failed to record outcome. Please try again.');
     }
   };
 
