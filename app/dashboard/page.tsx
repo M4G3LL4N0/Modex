@@ -144,7 +144,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <main className="relative overflow-hidden min-h-screen">
+    <div className="relative overflow-hidden min-h-screen">
       <div className="pointer-events-none absolute inset-0 hero-grid opacity-30" />
       <div className="pointer-events-none absolute left-1/2 top-0 h-[540px] w-[920px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(71,113,255,0.20),rgba(71,113,255,0.04),transparent_68%)] blur-3xl" />
       
@@ -341,6 +341,6 @@ export default function DashboardPage() {
         </div>
       </div>
       <Footer />
-    </main>
+    </div>
   );
 }

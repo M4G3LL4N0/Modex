@@ -1,4 +1,3 @@
-import { ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 export default function InvestorsPage() {
@@ -180,7 +179,7 @@ export default function InvestorsPage() {
         
         <Link href="/contact" className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-blue-900 bg-gradient-to-r from-blue-200 to-white hover:bg-blue-100 transition-all duration-200">
           Get in touch
-          <ArrowRight className="ml-2 h-4 w-4" />
+          <span className="ml-2">→</span>
         </Link>
       </section>
     </div>
