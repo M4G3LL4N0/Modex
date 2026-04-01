@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
     optimizePackageImports: [
       '@supabase/supabase-js',
       'openai'
-    ]
+    ],
+    turbo: {
+      resolveExtensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.json']
+    }
   },
   images: {
     domains: ['avatars.githubusercontent.com'],
