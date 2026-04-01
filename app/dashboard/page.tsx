@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 type Prediction = {
@@ -21,7 +21,31 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPrediction, setCurrentPrediction] = useState<Prediction | null>(null);
   const [history, setHistory] = useState<Prediction[]>([]);
+  const [stats, setStats] = useState({
+    totalPredictions: 0,
+    avgScore: 0,
+    successRate: 0
+  });
   const router = useRouter();
+
+  useEffect(() => {
+    // Calculate stats from history
+    const totalPredictions = history.length;
+    const totalScore = history.reduce((sum, item) => sum + item.prediction.score, 0);
+    const avgScore = totalPredictions > 0 ? totalScore / totalPredictions : 0;
+    
+    const successfulOutcomes = history.filter(item => 
+      item.outcome?.success === true
+    ).length;
+    const successRate = history.filter(item => item.outcome).length > 0 ?
+      (successfulOutcomes / history.filter(item => item.outcome).length) : 0;
+
+    setStats({
+      totalPredictions,
+      avgScore,
+      successRate
+    });
+  }, [history]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +76,30 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-900 to-indigo-900 p-6">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="max-w-6xl mx-auto space-y-6">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="glass-panel p-6 rounded-2xl">
+            <div className="text-blue-200">Total Predictions</div>
+            <div className="text-3xl font-bold text-white mt-2">
+              {stats.totalPredictions}
+            </div>
+          </div>
+          <div className="glass-panel p-6 rounded-2xl">
+            <div className="text-blue-200">Average Score</div>
+            <div className="text-3xl font-bold text-white mt-2">
+              {(stats.avgScore * 100).toFixed(1)}%
+            </div>
+          </div>
+          <div className="glass-panel p-6 rounded-2xl">
+            <div className="text-blue-200">Success Rate</div>
+            <div className="text-3xl font-bold text-white mt-2">
+              {(stats.successRate * 100).toFixed(1)}%
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Left Column - Input and Current Result */}
         <div className="space-y-6">
           <div className="glass-panel p-6 rounded-2xl">
