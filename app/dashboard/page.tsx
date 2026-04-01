@@ -334,6 +334,7 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </main>
   );
 }

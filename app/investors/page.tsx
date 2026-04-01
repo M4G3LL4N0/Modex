@@ -1,8 +1,16 @@
 import SectionLabel from '../page'
 
+import { Header, Footer } from "@/components/Header";
+
 export default function InvestorsPage() {
   return (
-    <div className="glass-panel">
+    <main className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 hero-grid opacity-30" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[540px] w-[920px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(71,113,255,0.20),rgba(71,113,255,0.04),transparent_68%)] blur-3xl" />
+      
+      <Header />
+      
+      <div className="glass-panel max-w-7xl mx-auto px-6 py-10 lg:px-10">
       {/* HERO */}
       <section className="section-ring">
         <div className="max-w-4xl mx-auto text-center">
@@ -149,6 +157,8 @@ export default function InvestorsPage() {
           Contact Investor Relations
         </a>
       </section>
-    </div>
+      </div>
+      <Footer />
+    </main>
   )
 }

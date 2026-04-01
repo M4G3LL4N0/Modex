@@ -22,62 +22,7 @@ export default function HomePage() {
       <div className="pointer-events-none absolute inset-0 hero-grid opacity-30" />
       <div className="pointer-events-none absolute left-1/2 top-0 h-[540px] w-[920px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(71,113,255,0.20),rgba(71,113,255,0.04),transparent_68%)] blur-3xl" />
 
-      <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
-        <a href="#" className="flex items-center gap-3">
-          <div className="glass-panel flex h-11 w-11 items-center justify-center rounded-2xl">
-            <span className="text-sm font-semibold tracking-[0.28em] text-white/90">
-              MX
-            </span>
-          </div>
-          <div>
-            <div className="text-sm font-semibold tracking-[0.25em] text-white/90">
-              MODEX
-            </div>
-            <div className="text-[11px] uppercase tracking-[0.22em] text-white/45">
-              Noaerth Ecosystem Venture
-            </div>
-          </div>
-        </a>
-
-        <nav className="hidden items-center gap-8 text-sm text-white/60 md:flex">
-          <a href="#platform" className="transition hover:text-white">
-            Platform
-          </a>
-          <a href="#use-cases" className="transition hover:text-white">
-            Use Cases
-          </a>
-          <a href="#roadmap" className="transition hover:text-white">
-            Roadmap
-          </a>
-          <a href="/technology" className="transition hover:text-white">
-            Technology
-          </a>
-          <a href="/investors" className="transition hover:text-white">
-            Investors
-          </a>
-        </nav>
-
-        <div className="flex items-center gap-3">
-          <a
-            href="https://noaerth.com"
-            className="hidden rounded-full border border-white/12 px-4 py-2 text-sm text-white/70 transition hover:border-white/20 hover:text-white md:inline-flex"
-          >
-            Noaerth
-          </a>
-          <a
-            href="/investors"
-            className="hidden rounded-full border border-white/12 px-4 py-2 text-sm text-white/70 transition hover:border-white/20 hover:text-white md:inline-flex"
-          >
-            Investors
-          </a>
-          <a
-            href="#waitlist"
-            className="rounded-full border border-blue-300/20 bg-white/[0.08] px-4 py-2 text-sm font-medium text-white transition hover:bg-white/[0.12]"
-          >
-            Join waitlist
-          </a>
-        </div>
-      </header>
+      <Header />
 
       <section className="relative z-10 mx-auto max-w-7xl px-6 pb-20 pt-10 lg:px-10 lg:pb-28 lg:pt-14">
         <div className="grid items-center gap-12 lg:grid-cols-[1.08fr_0.92fr]">
@@ -398,38 +343,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <footer className="relative z-10 mx-auto max-w-7xl px-6 pb-8 lg:px-10">
-        <div className="glass-panel flex flex-col items-center gap-6 rounded-[24px] border border-white/10 px-6 py-8 text-center sm:flex-row sm:justify-between sm:text-left">
-          <div className="flex items-center gap-3">
-            <div className="glass-panel flex h-11 w-11 items-center justify-center rounded-2xl">
-              <span className="text-sm font-semibold tracking-[0.28em] text-white/90">
-                MX
-              </span>
-            </div>
-            <div className="text-sm text-white/60">
-              A Noaerth Ecosystem Venture
-            </div>
-          </div>
-
-          <nav className="flex flex-wrap items-center justify-center gap-4 text-sm text-white/60 sm:gap-6">
-            <a href="/" className="transition hover:text-white">
-              Home
-            </a>
-            <a href="/technology" className="transition hover:text-white">
-              Technology
-            </a>
-            <a href="/investors" className="transition hover:text-white">
-              Investors
-            </a>
-            <a
-              href="https://noaerth.com"
-              className="transition hover:text-white"
-            >
-              Noaerth
-            </a>
-          </nav>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

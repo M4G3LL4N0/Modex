@@ -1,8 +1,16 @@
 import SectionLabel from '../page'
 
+import { Header, Footer } from "@/components/Header";
+
 export default function TechnologyPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 py-16">
+    <main className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 hero-grid opacity-30" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[540px] w-[920px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(71,113,255,0.20),rgba(71,113,255,0.04),transparent_68%)] blur-3xl" />
+      
+      <Header />
+      
+      <div className="max-w-7xl mx-auto px-6 py-10 lg:px-10">
       {/* HERO */}
       <section className="mb-16">
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl mb-4">
@@ -111,6 +119,8 @@ export default function TechnologyPage() {
           Build on Modex
         </button>
       </section>
-    </div>
+      </div>
+      <Footer />
+    </main>
   )
 }
