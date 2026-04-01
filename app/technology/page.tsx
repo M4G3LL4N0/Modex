@@ -1,6 +1,6 @@
-import SectionLabel from '../page'
-
-import { Header, Footer } from "@/components/Header";
+import { SectionLabel } from '../page'
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 export default function TechnologyPage() {
   return (
