@@ -166,11 +166,15 @@ export default function DashboardPage() {
               history.map((item, index) => (
                 <div 
                   key={item.input.id} 
-                  className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
-                  onClick={() => setCurrentPrediction(item)}
+                  className="p-4 bg-white/5 rounded-lg hover:bg-white/10 transition-colors"
                 >
-                  <p className="text-white line-clamp-2 mb-2">{item.input.content}</p>
-                  <div className="flex justify-between text-sm">
+                  <p 
+                    className="text-white line-clamp-2 mb-2 cursor-pointer"
+                    onClick={() => setCurrentPrediction(item)}
+                  >
+                    {item.input.content}
+                  </p>
+                  <div className="flex justify-between text-sm mb-3">
                     <span className="text-blue-200">
                       Score: {(item.prediction.score * 100).toFixed(0)}%
                     </span>
@@ -182,6 +186,77 @@ export default function DashboardPage() {
                       {item.prediction.risk_level}
                     </span>
                   </div>
+                  {!item.outcome && (
+                    <div className="flex gap-2">
+                      <button
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          try {
+                            const response = await fetch('/api/outcome', {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({
+                                input_id: item.input.id,
+                                success: true,
+                                actual_outcome: 'Successful outcome'
+                              }),
+                            });
+                            if (response.ok) {
+                              setHistory(prev => prev.map(p => 
+                                p.input.id === item.input.id 
+                                  ? { ...p, outcome: { success: true } }
+                                  : p
+                              ));
+                            }
+                          } catch (error) {
+                            console.error('Error marking success:', error);
+                          }
+                        }}
+                        className="text-xs bg-green-600 hover:bg-green-700 text-white py-1 px-3 rounded"
+                      >
+                        Mark Success
+                      </button>
+                      <button
+                        onClick={async (e) => {
+                          e.stopPropagation();
+                          try {
+                            const response = await fetch('/api/outcome', {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify({
+                                input_id: item.input.id,
+                                success: false,
+                                actual_outcome: 'Unsuccessful outcome'
+                              }),
+                            });
+                            if (response.ok) {
+                              setHistory(prev => prev.map(p => 
+                                p.input.id === item.input.id 
+                                  ? { ...p, outcome: { success: false } }
+                                  : p
+                              ));
+                            }
+                          } catch (error) {
+                            console.error('Error marking failure:', error);
+                          }
+                        }}
+                        className="text-xs bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded"
+                      >
+                        Mark Failure
+                      </button>
+                    </div>
+                  )}
+                  {item.outcome && (
+                    <div className="text-xs mt-2">
+                      <span className={item.outcome.success ? 'text-green-400' : 'text-red-400'}>
+                        {item.outcome.success ? '✓ Success' : '✗ Failure'}
+                      </span>
+                    </div>
+                  )}
                 </div>
               ))
             ) : (
