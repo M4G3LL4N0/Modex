@@ -144,7 +144,13 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-900 to-indigo-900 p-6">
+    <main className="relative overflow-hidden min-h-screen">
+      <div className="pointer-events-none absolute inset-0 hero-grid opacity-30" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-[540px] w-[920px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(71,113,255,0.20),rgba(71,113,255,0.04),transparent_68%)] blur-3xl" />
+      
+      <Header />
+      
+      <div className="min-h-screen bg-gradient-to-br from-blue-900 to-indigo-900 p-6">
       <div className="max-w-6xl mx-auto space-y-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
