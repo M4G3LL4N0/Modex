@@ -1,54 +1,91 @@
 import { NextResponse } from "next/server";
 import { createEmbedding } from "@/lib/engine/embedding";
-import { findSimilarInputs } from "@/lib/engine/similarity";
+import { cosineSimilarity } from "@/lib/engine/similarity";
 import { supabase } from "@/lib/supabase";
-import { runPrediction } from "@/lib/engine/predict";
+import { runLLMDecision } from "@/lib/engine/llm";
 
 export async function POST(req: Request) {
-  const { content, user_id } = await req.json();
+  try {
+    const { content, user_id } = await req.json();
 
-  if (!content) {
-    return NextResponse.json({ error: "Missing content" }, { status: 400 });
+    if (!content) {
+      return NextResponse.json({ error: "Missing content" }, { status: 400 });
+    }
+
+    // 1. Generate embedding
+    const embedding = await createEmbedding(content);
+
+    // 2. Insert input with embedding
+    const { data: input, error: insertError } = await supabase
+      .from("inputs")
+      .insert([{ content, user_id, embedding }])
+      .select()
+      .single();
+
+    if (insertError || !input) {
+      throw new Error(insertError?.message || "Failed to insert input");
+    }
+
+    // 3. Fetch last 25 inputs
+    const { data: recentInputs, error: fetchError } = await supabase
+      .from("inputs")
+      .select("id, content, embedding, outcome")
+      .order("created_at", { ascending: false })
+      .limit(25);
+
+    if (fetchError) {
+      throw new Error(fetchError.message);
+    }
+
+    // 4. Compute similarity and select top 5
+    const inputsWithSimilarity = recentInputs
+      .filter(i => i.id !== input.id) // Exclude current input
+      .map(i => ({
+        ...i,
+        similarity: cosineSimilarity(embedding, i.embedding)
+      }))
+      .sort((a, b) => b.similarity - a.similarity)
+      .slice(0, 5);
+
+    // 5. Build context string
+    const context = inputsWithSimilarity
+      .map((input, i) => 
+        `Similar input #${i + 1}:\n` +
+        `Content: ${input.content}\n` +
+        `Outcome: ${input.outcome !== undefined ? (input.outcome ? 'Success' : 'Failure') : 'Unknown'}\n`
+      )
+      .join('\n');
+
+    // 6. Run LLM decision
+    const prediction = await runLLMDecision(content, context);
+
+    // 7. Store prediction
+    const { error: predictionError } = await supabase
+      .from("predictions")
+      .insert([
+        {
+          input_id: input.id,
+          score: prediction.score,
+          confidence: prediction.confidence,
+          risk_level: prediction.risk_level,
+          recommendation: prediction.recommendation,
+        },
+      ]);
+
+    if (predictionError) {
+      throw new Error(predictionError.message);
+    }
+
+    return NextResponse.json({
+      input,
+      prediction,
+    });
+
+  } catch (error) {
+    console.error("Prediction error:", error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Prediction failed" },
+      { status: 500 }
+    );
   }
-
-  // Generate embedding
-  const embedding = await createEmbedding(content);
-
-  // Store input with embedding
-  const { data: input } = await supabase
-    .from("inputs")
-    .insert([{ content, user_id, embedding }])
-    .select()
-    .single();
-
-  // Find similar past inputs
-  const similarInputs = await findSimilarInputs(embedding);
-
-  // Build context from similar inputs
-  const context = similarInputs
-    .map((input, i) => 
-      `Similar input #${i + 1}:\n` +
-      `Content: ${input.content}\n` +
-      `Outcome: ${input.outcome !== undefined ? (input.outcome ? 'Success' : 'Failure') : 'Unknown'}\n`
-    )
-    .join('\n');
-
-  // Run prediction with context
-  const result = await runPrediction(content, context);
-
-  // Store prediction
-  await supabase.from("predictions").insert([
-    {
-      input_id: input.id,
-      score: result.score,
-      confidence: result.confidence,
-      risk_level: result.risk_level,
-      recommendation: result.recommendation,
-    },
-  ]);
-
-  return NextResponse.json({
-    input,
-    prediction: result,
-  });
 }
