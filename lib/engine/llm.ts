@@ -1,4 +1,3 @@
-import OpenAI from "openai";
 import { getClient } from "./embedding";
 
 export type LLMDecision = {
