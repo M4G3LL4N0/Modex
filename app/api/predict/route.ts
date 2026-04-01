@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { createEmbedding } from "@/lib/engine/embedding";
+import { findSimilarInputs } from "@/lib/engine/similarity";
 import { supabase } from "@/lib/supabase";
 import { runPrediction } from "@/lib/engine/predict";
 

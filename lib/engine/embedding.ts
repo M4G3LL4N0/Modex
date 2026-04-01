@@ -1,8 +1,4 @@
-import OpenAI from "openai";
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+import { openai } from "./openai";
 
 export async function createEmbedding(text: string): Promise<number[]> {
   const response = await openai.embeddings.create({
