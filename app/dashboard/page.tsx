@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 type PredictionResult = {
   score: number;
@@ -341,6 +343,7 @@ export default function DashboardPage() {
         </div>
       </div>
       <Footer />
+      </div>
     </div>
   );
 }

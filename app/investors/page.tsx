@@ -1,6 +1,7 @@
 import SectionLabel from '../page'
 
-import { Header, Footer } from "@/components/Header";
+import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
 export default function InvestorsPage() {
   return (
