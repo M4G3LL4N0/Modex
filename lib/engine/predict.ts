@@ -1,5 +1,6 @@
-import { runLLMDecision } from "./llm";
 import { createEmbedding } from "./embedding";
+import { runLLMDecision } from "./llm";
+import { cosineSimilarity } from "./similarity";
 
 export type PredictionResult = {
   score: number;
@@ -9,19 +10,23 @@ export type PredictionResult = {
 };
 
 export async function runPrediction(
-  input: string,
-  context?: string
+  input: string
 ): Promise<PredictionResult> {
-  // Create embedding for context
+  // 1. Create embedding for the input
   const embedding = await createEmbedding(input);
+
+  // 2. Placeholder for fetching similar past inputs
+  const similarInputs = []; // TODO: Implement similarity search
   
-  // Get structured decision from LLM
-  const fullContext = [
-    `Input embedding vector: ${JSON.stringify(embedding)}`,
-    context,
-  ].filter(Boolean).join('\n\n');
-  
-  const result = await runLLMDecision(input, fullContext);
+  // 3. Prepare context including embedding info
+  const context = [
+    "Similarity Analysis Context:",
+    `- Input embedding created (${embedding.length}d vector)`,
+    `- Found ${similarInputs.length} similar historical inputs`,
+  ].join("\n");
+
+  // 4. Get structured decision from LLM
+  const result = await runLLMDecision(input, context);
   
   return {
     score: result.score,
