@@ -15,8 +15,13 @@ export async function runPrediction(
   // 1. Create embedding for the input
   const embedding = await createEmbedding(input);
 
-  // 2. Placeholder for fetching similar past inputs
-  const similarInputs = []; // TODO: Implement similarity search
+  // 2. Placeholder for fetching similar past inputs (will be JSONB embeddings)
+  const similarInputs: Array<{
+    id: string;
+    content: string;
+    embedding: string;
+    outcome?: boolean;
+  }> = []; // TODO: Implement similarity search
   
   // 3. Prepare context including embedding info
   const context = [

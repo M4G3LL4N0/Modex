@@ -33,7 +33,7 @@ export async function POST(req: Request) {
         success,
         actual_outcome,
         notes,
-        prediction_accuracy: accuracy,
+        prediction_accuracy: parseFloat(accuracy.toFixed(4)), // Store as float with 4 decimal places
       },
     ]);
 

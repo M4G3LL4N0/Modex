@@ -15,10 +15,14 @@ export async function POST(req: Request) {
     // 1. Generate embedding
     const embedding = await createEmbedding(content);
 
-    // 2. Insert input with embedding
+    // 2. Insert input with embedding (stored as JSONB)
     const { data: input, error: insertError } = await supabase
       .from("inputs")
-      .insert([{ content, user_id, embedding }])
+      .insert([{ 
+        content, 
+        user_id, 
+        embedding: JSON.stringify(embedding) 
+      }])
       .select()
       .single();
 
@@ -42,7 +46,7 @@ export async function POST(req: Request) {
       .filter(i => i.id !== input.id) // Exclude current input
       .map(i => ({
         ...i,
-        similarity: cosineSimilarity(embedding, i.embedding)
+        similarity: cosineSimilarity(embedding, JSON.parse(i.embedding))
       }))
       .sort((a, b) => b.similarity - a.similarity)
       .slice(0, 5);
