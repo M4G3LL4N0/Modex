@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createEmbedding } from "../../../lib/engine/embedding";
-import { cosineSimilarity } from "../../../lib/engine/similarity";
+import { cosineSimilarity } from "@/lib/engine/similarity";
 import { supabase } from "../../../lib/supabase";
 import { runLLMDecision } from "../../../lib/engine/llm";
 
