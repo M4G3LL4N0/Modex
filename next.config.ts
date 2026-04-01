@@ -1,8 +1,21 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   reactCompiler: true,
+  experimental: {
+    optimizePackageImports: [
+      '@supabase/supabase-js',
+      'openai'
+    ]
+  },
+  images: {
+    domains: ['avatars.githubusercontent.com'],
+  },
+  logging: {
+    fetches: {
+      fullUrl: true
+    }
+  }
 };
 
 export default nextConfig;
