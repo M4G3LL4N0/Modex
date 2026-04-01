@@ -8,7 +8,8 @@ export type LLMDecision = {
 };
 
 export async function runLLMDecision(input: string, context: string): Promise<LLMDecision> {
-  const response = await openai.chat.completions.create({
+  try {
+    const response = await openai.chat.completions.create({
     model: "gpt-4-turbo-preview", // Updated to latest model
     messages: [
       {
@@ -28,6 +29,30 @@ Context: ${context}`,
     response_format: { type: "json_object" },
   });
 
-  const result = JSON.parse(response.choices[0].message.content || "{}");
-  return result as LLMDecision;
+    const content = response.choices[0]?.message?.content;
+    if (!content) {
+      throw new Error("No content in LLM response");
+    }
+
+    const result = JSON.parse(content);
+    
+    // Validate response structure
+    if (typeof result.score !== 'number' || 
+        typeof result.confidence !== 'number' ||
+        !['low','moderate','high'].includes(result.risk_level) ||
+        typeof result.recommendation !== 'string') {
+      throw new Error("Invalid LLM response format");
+    }
+
+    return result as LLMDecision;
+  } catch (error) {
+    console.error("LLM Error:", error);
+    // Return safe fallback
+    return {
+      score: 0.5,
+      confidence: 0.5,
+      risk_level: "moderate",
+      recommendation: "Unable to generate recommendation at this time"
+    };
+  }
 }

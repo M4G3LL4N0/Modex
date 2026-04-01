@@ -1,5 +1,10 @@
 export function cosineSimilarity(a: number[], b: number[]): number {
-  if (a.length !== b.length) return 0;
+  if (!Array.isArray(a) || !Array.isArray(b)) return 0;
+  if (a.length !== b.length || a.length === 0) return 0;
+  
+  // Handle potential NaN values
+  a = a.map(x => Number.isFinite(x) ? x : 0);
+  b = b.map(x => Number.isFinite(x) ? x : 0);
   
   let dot = 0, magA = 0, magB = 0;
   

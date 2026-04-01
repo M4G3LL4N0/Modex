@@ -6,10 +6,28 @@ import { runLLMDecision } from "@/lib/engine/llm";
 
 export async function POST(req: Request) {
   try {
-    const { content, user_id } = await req.json();
+    // Validate request
+    if (!req.body) {
+      return NextResponse.json(
+        { error: "Request body is required" },
+        { status: 400 }
+      );
+    }
 
-    if (!content) {
-      return NextResponse.json({ error: "Missing content" }, { status: 400 });
+    const { content, user_id } = await req.json().catch(() => ({}));
+
+    if (!content || typeof content !== 'string') {
+      return NextResponse.json(
+        { error: "Valid content string is required" }, 
+        { status: 400 }
+      );
+    }
+
+    if (content.length > 1000) {
+      return NextResponse.json(
+        { error: "Content must be less than 1000 characters" },
+        { status: 400 }
+      );
     }
 
     // 1. Generate embedding

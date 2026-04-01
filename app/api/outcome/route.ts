@@ -3,10 +3,28 @@ import { supabase } from "@/lib/supabase";
 
 export async function POST(req: Request) {
   try {
-    const { input_id, success, actual_outcome, notes } = await req.json();
+    // Validate request
+    if (!req.body) {
+      return NextResponse.json(
+        { error: "Request body is required" },
+        { status: 400 }
+      );
+    }
 
-    if (!input_id) {
-      return NextResponse.json({ error: "Missing input_id" }, { status: 400 });
+    const { input_id, success, actual_outcome, notes } = await req.json().catch(() => ({}));
+
+    if (!input_id || typeof input_id !== 'string') {
+      return NextResponse.json(
+        { error: "Valid input_id string is required" },
+        { status: 400 }
+      );
+    }
+
+    if (typeof success !== 'boolean') {
+      return NextResponse.json(
+        { error: "Valid success boolean is required" },
+        { status: 400 }
+      );
     }
 
     // 1. Get the prediction for this input

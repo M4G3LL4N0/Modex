@@ -25,6 +25,10 @@ export type HistoryItem = {
 
 export async function GET() {
   try {
+    // Rate limiting check could be added here
+    if (process.env.NODE_ENV === 'production') {
+      // Add any production-specific safeguards
+    }
     // Fetch predictions with joined input and outcome data
     const { data, error } = await supabase
       .from("predictions")
