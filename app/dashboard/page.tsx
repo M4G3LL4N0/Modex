@@ -14,6 +14,15 @@ type Prediction = {
     risk_level: string;
     recommendation: string;
   };
+  outcome?: {
+    success: boolean;
+  };
+};
+
+type Stats = {
+  totalPredictions: number;
+  avgScore: number;
+  successRate: number;
 };
 
 export default function DashboardPage() {
