@@ -11,7 +11,7 @@ export async function POST(req: Request) {
 
     const supabase = getSupabase();
 
-    const prediction = {
+    const prediction: PredictionResult = {
       score: 0.7,
       confidence: 0.8,
       risk_level: "moderate",
