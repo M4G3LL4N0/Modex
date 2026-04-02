@@ -1,68 +1,42 @@
-import { getClient } from "./embedding";
+import OpenAI from "openai";
 
-export type LLMDecision = {
-  score: number;
-  confidence: number;
-  risk_level: "low" | "moderate" | "high";
-  recommendation: string;
-};
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-function normalizeRiskLevel(level: string): "low" | "moderate" | "high" {
-  const lower = level.toLowerCase();
-  if (lower.includes("high")) return "high";
-  if (lower.includes("moderate") || lower.includes("medium")) return "moderate";
-  return "low";
-}
+export async function runLLMDecision(input: string, context: string) {
+  const res = await client.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "system",
+        content:
+          "Return JSON with score (0-1), confidence (0-1), risk_level (low/moderate/high), recommendation.",
+      },
+      {
+        role: "user",
+        content: `Input: ${input}\nContext: ${context}`,
+      },
+    ],
+  });
 
-function clamp(value: number): number {
-  return Math.max(0, Math.min(1, value));
-}
+  const text = res.choices[0].message.content || "{}";
 
-export async function runLLMDecision(
-  input: string, 
-  context: string
-): Promise<LLMDecision> {
   try {
-    const response = await getClient().chat.completions.create({
-      model: "gpt-4",
-      messages: [
-        {
-          role: "system",
-          content: `You are a decision engine. Respond ONLY with valid JSON containing:
-- score (0-1): success likelihood
-- confidence (0-1): prediction certainty  
-- risk_level (low|moderate|high)
-- recommendation: string
-Context:\n${context}`
-        },
-        { role: "user", content: input }
-      ],
-      response_format: { type: "json_object" }
-    });
+    const parsed = JSON.parse(text);
 
-    const content = response.choices[0]?.message?.content;
-    if (!content) throw new Error("Empty LLM response");
-
-    const result = JSON.parse(content) as Partial<LLMDecision>;
-    
-    // Validate and normalize response
-    const safeResult: LLMDecision = {
-      score: clamp(typeof result.score === 'number' ? result.score : 0.5),
-      confidence: clamp(typeof result.confidence === 'number' ? result.confidence : 0.5),
-      risk_level: result.risk_level ? normalizeRiskLevel(result.risk_level) : "moderate",
-      recommendation: typeof result.recommendation === 'string' 
-        ? result.recommendation 
-        : "No recommendation available"
+    return {
+      score: Math.max(0, Math.min(1, parsed.score ?? 0.5)),
+      confidence: Math.max(0, Math.min(1, parsed.confidence ?? 0.5)),
+      risk_level: parsed.risk_level ?? "moderate",
+      recommendation: parsed.recommendation ?? "No recommendation",
     };
-
-    return safeResult;
-  } catch (error) {
-    console.error("LLM Error:", error);
+  } catch {
     return {
       score: 0.5,
       confidence: 0.5,
       risk_level: "moderate",
-      recommendation: "System temporarily unavailable"
+      recommendation: "Fallback response",
     };
   }
 }
