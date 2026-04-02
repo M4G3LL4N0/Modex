@@ -1,4 +1,4 @@
-export default function Header() {
+export function Header() {
   return (
     <header className="relative z-20 mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-6 lg:px-10">
       <a href="/" className="flex items-center gap-3">
