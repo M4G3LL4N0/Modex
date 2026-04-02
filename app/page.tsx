@@ -1,8 +1,7 @@
-import Layout from "@/components/Layout";
-
 export default function HomePage() {
   return (
-    <Layout>
+    <main className="page-shell">
+      <header className="site-header">
         <div className="container nav-row">
           <div className="brand-wrap">
             <div className="brand-mark">MX</div>
@@ -26,9 +25,9 @@ export default function HomePage() {
           <div>
             <div className="pill-row">
               <span className="pill">Prediction Infrastructure</span>
-              <span className="pill">Machine Intelligence</span>
+              <span className="pill">Inference Layer</span>
               <span className="pill">Decision Systems</span>
-              <span className="pill">Feedback Loops</span>
+              <span className="pill">Adaptive Intelligence</span>
             </div>
 
             <h1 className="hero-title">
@@ -38,35 +37,34 @@ export default function HomePage() {
             </h1>
 
             <p className="hero-copy">
-              Modex is building an intelligence engine for prediction, inference,
-              optimization, and adaptive decision systems. The product direction
-              is simple: turn raw scenarios into scored judgment and better action.
+              Modex is a premium machine-intelligence venture focused on prediction,
+              inference, optimization, and long-term adaptive decision systems.
             </p>
 
-            <div className="button-row" style={{ marginTop: 28 }}>
+            <div className="button-row" style={{ marginTop: 30 }}>
               <a className="button-primary" href="/dashboard">Open Dashboard</a>
-              <a className="button-secondary" href="/technology">View Technology</a>
+              <a className="button-secondary" href="/technology">Explore Technology</a>
             </div>
 
             <div className="stat-row card-grid-3">
               <div className="glass-card panel">
                 <div className="eyebrow">Category</div>
-                <div className="card-copy" style={{ marginTop: 10, color: "rgba(255,255,255,0.9)" }}>
-                  Machine intelligence infrastructure
+                <div className="card-copy" style={{ marginTop: 10, color: "rgba(255,255,255,0.92)" }}>
+                  Decision intelligence infrastructure
                 </div>
               </div>
 
               <div className="glass-card panel">
-                <div className="eyebrow">Thesis</div>
-                <div className="card-copy" style={{ marginTop: 10, color: "rgba(255,255,255,0.9)" }}>
-                  Signals → inference → action
+                <div className="eyebrow">Core thesis</div>
+                <div className="card-copy" style={{ marginTop: 10, color: "rgba(255,255,255,0.92)" }}>
+                  Signals become scored judgment
                 </div>
               </div>
 
               <div className="glass-card panel">
-                <div className="eyebrow">Motion</div>
-                <div className="card-copy" style={{ marginTop: 10, color: "rgba(255,255,255,0.9)" }}>
-                  Launch fast, learn faster
+                <div className="eyebrow">Long-term moat</div>
+                <div className="card-copy" style={{ marginTop: 10, color: "rgba(255,255,255,0.92)" }}>
+                  Outcome-driven learning loops
                 </div>
               </div>
             </div>
@@ -74,11 +72,11 @@ export default function HomePage() {
 
           <div className="engine-frame">
             <div className="engine-inner">
-              <div className="eyebrow">Live system frame</div>
+              <div className="eyebrow">System preview</div>
               <h2 className="card-title" style={{ marginTop: 10 }}>Modex Engine</h2>
               <p className="card-copy">
-                A machine-backed decision layer that scores inputs, generates recommendations,
-                and gets more useful as outcomes accumulate.
+                A glassy, operator-facing decision layer for turning scenario input into
+                scored output, confidence estimates, and recommended next action.
               </p>
 
               <div className="metric-list">
@@ -87,7 +85,7 @@ export default function HomePage() {
                   <span className="metric-value">91%</span>
                 </div>
                 <div className="metric-item">
-                  <span className="metric-label">Risk signal</span>
+                  <span className="metric-label">Risk framing</span>
                   <span className="metric-value">Moderate</span>
                 </div>
                 <div className="metric-item">
@@ -97,10 +95,10 @@ export default function HomePage() {
               </div>
 
               <div className="glass-card panel" style={{ marginTop: 18 }}>
-                <div className="eyebrow">Recommended output</div>
+                <div className="eyebrow">Recommendation</div>
                 <p className="card-copy">
-                  Prioritize this workflow, route resources here, and track the result
-                  so the system gets sharper over time.
+                  Proceed with structured caution, monitor outcomes, and feed results back
+                  into the system to improve future predictions.
                 </p>
               </div>
             </div>
@@ -112,34 +110,37 @@ export default function HomePage() {
         <div className="container">
           <div className="section-label">
             <span className="section-label-dot" />
-            Why Modex
+            Core System
           </div>
 
-          <div className="card-grid-3">
+          <h2 className="section-title">A premium operating layer for machine-backed judgment.</h2>
+          <p className="section-copy">
+            Modex is being shaped as a refined intelligence product: calm, decisive,
+            high-signal, and designed to feel more like infrastructure than an app.
+          </p>
+
+          <div className="card-grid-3" style={{ marginTop: 28 }}>
             <div className="glass-card panel-lg">
               <div className="eyebrow">Prediction</div>
-              <h3 className="card-title">Turn raw scenarios into scored judgment.</h3>
+              <h3 className="card-title">Turn scenarios into scored outputs.</h3>
               <p className="card-copy">
-                Modex helps operators move from intuition alone to machine-assisted scoring
-                with clearer visibility into risk and confidence.
+                The system converts raw input into structured judgment with clearer visibility into likely direction.
               </p>
             </div>
 
             <div className="glass-card panel-lg">
               <div className="eyebrow">Inference</div>
-              <h3 className="card-title">Generate machine-backed recommendations.</h3>
+              <h3 className="card-title">Generate recommendations with context.</h3>
               <p className="card-copy">
-                The engine provides a recommendation layer on top of scenario input,
-                giving decisions structure instead of ambiguity.
+                Modex adds confidence and risk framing so action is guided, not improvised.
               </p>
             </div>
 
             <div className="glass-card panel-lg">
               <div className="eyebrow">Learning</div>
-              <h3 className="card-title">Build toward an adaptive system.</h3>
+              <h3 className="card-title">Evolve toward adaptive decision systems.</h3>
               <p className="card-copy">
-                Long term, Modex compounds value by learning from outcomes and improving
-                how future decisions are framed.
+                Over time the platform can deepen into memory, outcomes, and stronger intelligence loops.
               </p>
             </div>
           </div>

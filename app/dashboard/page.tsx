@@ -46,7 +46,8 @@ export default function DashboardPage() {
   }
 
   return (
-    <Layout>
+    <main className="page-shell">
+      <header className="site-header">
         <div className="container nav-row">
           <div className="brand-wrap">
             <div className="brand-mark">MX</div>
@@ -74,17 +75,18 @@ export default function DashboardPage() {
 
           <h1 className="section-title">Run a machine-backed scenario.</h1>
           <p className="section-copy">
-            Submit a scenario to the Modex engine and receive a score, confidence estimate,
-            risk level, and recommendation.
+            Enter a decision context and receive a score, confidence level, risk framing,
+            and recommendation from the Modex engine.
           </p>
 
-          <div className="split-layout" style={{ marginTop: 28 }}>
+          <div className="split-layout" style={{ marginTop: 30 }}>
             <div className="glass-card panel-lg">
               <div className="eyebrow">Scenario Input</div>
+
               <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Describe the decision, scenario, or operating context..."
+                placeholder="Describe the decision, operator context, or scenario..."
                 className="textarea-box"
                 style={{ marginTop: 16 }}
               />
@@ -114,7 +116,7 @@ export default function DashboardPage() {
                     marginTop: 18,
                     borderColor: "rgba(255, 120, 120, 0.22)",
                     background: "rgba(255, 80, 80, 0.08)",
-                    color: "#ffcaca",
+                    color: "#ffd4d4",
                   }}
                 >
                   {error}
@@ -128,24 +130,24 @@ export default function DashboardPage() {
 
                 {result ? (
                   <>
-                    <div className="card-grid-3" style={{ marginTop: 16 }}>
+                    <div className="card-grid-3" style={{ marginTop: 18 }}>
                       <div className="glass-card panel">
                         <div className="eyebrow">Score</div>
-                        <div className="card-title" style={{ fontSize: 32 }}>
+                        <div className="card-title" style={{ fontSize: 34 }}>
                           {Math.round(result.score * 100)}%
                         </div>
                       </div>
 
                       <div className="glass-card panel">
                         <div className="eyebrow">Confidence</div>
-                        <div className="card-title" style={{ fontSize: 32 }}>
+                        <div className="card-title" style={{ fontSize: 34 }}>
                           {Math.round(result.confidence * 100)}%
                         </div>
                       </div>
 
                       <div className="glass-card panel">
                         <div className="eyebrow">Risk</div>
-                        <div className="card-title" style={{ fontSize: 32 }}>
+                        <div className="card-title" style={{ fontSize: 34 }}>
                           {result.risk_level}
                         </div>
                       </div>
@@ -158,7 +160,7 @@ export default function DashboardPage() {
                   </>
                 ) : (
                   <p className="card-copy" style={{ marginTop: 16 }}>
-                    No prediction yet. Run a scenario to see output.
+                    No prediction yet. Submit a scenario to preview the decision layer.
                   </p>
                 )}
               </div>
@@ -166,8 +168,8 @@ export default function DashboardPage() {
               <div className="glass-card panel-lg">
                 <div className="eyebrow">System Status</div>
                 <p className="card-copy">
-                  This dashboard is the first operator-facing layer of Modex.
-                  Next steps are richer history, feedback loops, and stronger prediction memory.
+                  This is the first operator-facing Modex surface. The next layer is richer memory,
+                  historical outcomes, stronger analytics, and more adaptive inference.
                 </p>
               </div>
             </div>
