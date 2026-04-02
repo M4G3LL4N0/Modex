@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 
+type PredictionResult = {
+  score: number;
+  confidence: number;
+  risk_level: "low" | "moderate" | "high";
+  recommendation: string;
+};
+
 export default function DashboardPage() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<PredictionResult | null>(null);
@@ -9,79 +16,176 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
 
   async function runPrediction() {
-    if (!input.trim()) {
-      setError("Please enter a scenario");
-      return;
-    }
-
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const res = await fetch("/api/predict", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ content: input }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        throw new Error("Failed to get prediction");
+        setError(data?.error || "Prediction failed");
+        setResult(null);
+        return;
       }
 
-      const data = await res.json();
-      setResult(data.prediction);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      setResult(data.prediction ?? null);
+    } catch {
+      setError("Something went wrong");
+      setResult(null);
     } finally {
       setIsLoading(false);
     }
   }
 
   return (
-    <main className="min-h-screen bg-[#06070b] text-white">
-      <Header />
-      <div className="p-10">
-      <h1 className="text-3xl mb-6">Dashboard</h1>
-
-      <div className="max-w-3xl mx-auto">
-        <textarea
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="w-full p-4 bg-black/20 border border-white/10 rounded-lg focus:border-white/20 focus:ring-0"
-          placeholder="Enter scenario..."
-          rows={5}
-        />
-
-        <button
-          onClick={runPrediction}
-          disabled={isLoading}
-          className="mt-4 bg-white text-black px-6 py-3 rounded-lg font-medium hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {isLoading ? "Analyzing..." : "Run Prediction"}
-        </button>
-
-        {error && (
-          <div className="mt-4 text-red-400 text-sm">{error}</div>
-        )}
-
-        {result && (
-          <div className="mt-6 glass-panel p-6 rounded-lg">
-            <div className="flex items-center gap-4">
-              <div className="flex-1">
-                <div className="text-sm text-white/60">Prediction</div>
-                <div className="text-lg font-medium">{result.recommendation}</div>
-              </div>
-              <div className="text-sm text-white/60">
-                Confidence: {(result.confidence * 100).toFixed(0)}%
-              </div>
-            </div>
-            <div className="mt-4 text-sm text-white/60">
-              Risk Level: <span className="capitalize">{result.risk_level}</span>
+    <main className="page-shell">
+      <header className="site-header">
+        <div className="container nav-row">
+          <div className="brand-wrap">
+            <div className="brand-mark">MX</div>
+            <div>
+              <div className="brand-name">MODEX</div>
+              <div className="brand-subtitle">Noaerth Ecosystem Venture</div>
             </div>
           </div>
-        )}
-      </div>
-      </div>
-      <Footer />
+
+          <nav className="nav-links">
+            <a className="nav-link" href="/">Home</a>
+            <a className="nav-link" href="/technology">Technology</a>
+            <a className="nav-link" href="/investors">Investors</a>
+            <a className="nav-link" href="/dashboard">Dashboard</a>
+          </nav>
+        </div>
+      </header>
+
+      <section className="section" style={{ paddingTop: 72 }}>
+        <div className="container">
+          <div className="section-label">
+            <span className="section-label-dot" />
+            Dashboard
+          </div>
+
+          <h1 className="section-title">Run a machine-backed scenario.</h1>
+          <p className="section-copy">
+            Submit a scenario to the Modex engine and receive a score, confidence estimate,
+            risk level, and recommendation.
+          </p>
+
+          <div className="split-layout" style={{ marginTop: 28 }}>
+            <div className="glass-card panel-lg">
+              <div className="eyebrow">Scenario Input</div>
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Describe the decision, scenario, or operating context..."
+                className="textarea-box"
+                style={{ marginTop: 16 }}
+              />
+
+              <div className="button-row" style={{ marginTop: 16 }}>
+                <button
+                  onClick={runPrediction}
+                  disabled={isLoading || !input.trim()}
+                  className="button-primary"
+                  style={{
+                    opacity: isLoading || !input.trim() ? 0.55 : 1,
+                    cursor: isLoading || !input.trim() ? "not-allowed" : "pointer",
+                  }}
+                >
+                  {isLoading ? "Running..." : "Run Prediction"}
+                </button>
+
+                <a className="button-secondary" href="/">
+                  Back Home
+                </a>
+              </div>
+
+              {error ? (
+                <div
+                  className="glass-card panel"
+                  style={{
+                    marginTop: 18,
+                    borderColor: "rgba(255, 120, 120, 0.22)",
+                    background: "rgba(255, 80, 80, 0.08)",
+                    color: "#ffcaca",
+                  }}
+                >
+                  {error}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="stack">
+              <div className="glass-card panel-lg">
+                <div className="eyebrow">Latest Result</div>
+
+                {result ? (
+                  <>
+                    <div className="card-grid-3" style={{ marginTop: 16 }}>
+                      <div className="glass-card panel">
+                        <div className="eyebrow">Score</div>
+                        <div className="card-title" style={{ fontSize: 32 }}>
+                          {Math.round(result.score * 100)}%
+                        </div>
+                      </div>
+
+                      <div className="glass-card panel">
+                        <div className="eyebrow">Confidence</div>
+                        <div className="card-title" style={{ fontSize: 32 }}>
+                          {Math.round(result.confidence * 100)}%
+                        </div>
+                      </div>
+
+                      <div className="glass-card panel">
+                        <div className="eyebrow">Risk</div>
+                        <div className="card-title" style={{ fontSize: 32 }}>
+                          {result.risk_level}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="glass-card panel" style={{ marginTop: 18 }}>
+                      <div className="eyebrow">Recommendation</div>
+                      <p className="card-copy">{result.recommendation}</p>
+                    </div>
+                  </>
+                ) : (
+                  <p className="card-copy" style={{ marginTop: 16 }}>
+                    No prediction yet. Run a scenario to see output.
+                  </p>
+                )}
+              </div>
+
+              <div className="glass-card panel-lg">
+                <div className="eyebrow">System Status</div>
+                <p className="card-copy">
+                  This dashboard is the first operator-facing layer of Modex.
+                  Next steps are richer history, feedback loops, and stronger prediction memory.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="site-footer">
+        <div className="container footer-row">
+          <div>Modex — A Noaerth Ecosystem Venture</div>
+          <nav className="nav-links">
+            <a className="nav-link" href="/">Home</a>
+            <a className="nav-link" href="/technology">Technology</a>
+            <a className="nav-link" href="/investors">Investors</a>
+          </nav>
+        </div>
+      </footer>
     </main>
   );
 }
