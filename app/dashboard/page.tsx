@@ -46,8 +46,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="page-shell">
-      <header className="site-header">
+    <Layout>
         <div className="container nav-row">
           <div className="brand-wrap">
             <div className="brand-mark">MX</div>
