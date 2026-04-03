@@ -20,10 +20,9 @@ export default function Page() {
         </div>
       </header>
 
-      <section className="hero">
+      <section className="section hero-section">
         <div className="container grid-2">
-
-          <div>
+          <div className="hero-content">
             <h1 className="hero-title">
               Machine intelligence<br/>
               <span className="gradient-text">for decisions.</span>

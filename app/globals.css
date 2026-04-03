@@ -14,6 +14,12 @@
 
 /* ===== BASE ===== */
 
+.page-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -26,6 +32,48 @@ html, body {
     radial-gradient(circle at 80% 20%, rgba(180,120,255,0.18), transparent 30%),
     radial-gradient(circle at 50% 100%, rgba(60,200,255,0.12), transparent 40%),
     linear-gradient(180deg, #020617 0%, #050d1c 40%, #020617 100%);
+}
+
+/* ===== TYPOGRAPHY ===== */
+
+.section-title {
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.section-copy {
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 720px;
+  margin: 20px 0 0;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-2);
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0 0 12px;
+}
+
+.card-copy {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0;
 }
 
 /* subtle grid */
@@ -100,8 +148,21 @@ body::before {
 
 /* ===== HERO ===== */
 
-.hero {
-  padding: 120px 0 80px;
+.hero-section {
+  flex: 1;
+  padding: 160px 0;
+  display: flex;
+  align-items: center;
+}
+
+.hero-content {
+  max-width: 680px;
+}
+
+@media (max-width: 900px) {
+  .hero-section {
+    padding: 100px 0;
+  }
 }
 
 .hero-title {
