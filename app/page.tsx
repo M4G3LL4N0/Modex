@@ -1,26 +1,7 @@
 export default function Page() {
   return (
-    <main>
-      <header className="site-header">
-        <div className="container nav-row">
-          <div style={{display:"flex",gap:12,alignItems:"center"}}>
-            <div className="brand-mark">MX</div>
-            <div>
-              <div style={{fontWeight:700}}>MODEX</div>
-              <div style={{fontSize:12,opacity:.6}}>Noaerth Venture</div>
-            </div>
-          </div>
-
-          <nav style={{display:"flex",gap:20}}>
-            <a className="nav-link" href="/">Home</a>
-            <a className="nav-link" href="/technology">Technology</a>
-            <a className="nav-link" href="/investors">Investors</a>
-            <a className="nav-link" href="/dashboard">Dashboard</a>
-          </nav>
-        </div>
-      </header>
-
-      <section className="section hero-section">
+    <main className="page-shell">
+      <section className="section hero-section" style={{ paddingTop: '120px' }}>
         <div className="container grid-2">
           <div className="hero-content">
             <h1 className="hero-title">
