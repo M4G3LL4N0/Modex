@@ -1,24 +1,25 @@
 export default function Page() {
   return (
     <main className="page-shell">
-      <section className="hero">
-        <div className="container">
-
+      <div className="global-backdrop" />
+      
+      <section className="hero-section">
+        <div className="hero-backdrop" />
+        
+        <div className="hero-content">
           <h1 className="hero-title">
-            Machine intelligence<br />
-            <span className="gradient-text">for decisions.</span>
+            <span className="gradient-text">Modex</span><br />
+            Intelligence OS
           </h1>
 
           <p className="hero-copy">
-            Modex is building a decision intelligence layer that transforms raw
-            scenarios into scored judgment, confidence, and action.
+            The operating system for venture intelligence and decision-making.
           </p>
 
-          <div style={{ marginTop: 24, display: "flex", gap: 12 }}>
-            <a href="/dashboard" className="button-primary">Open Dashboard</a>
-            <a href="/technology" className="button-secondary">View Tech</a>
+          <div className="hero-actions">
+            <a href="/dashboard" className="button-primary">Launch OS</a>
+            <a href="/technology" className="button-secondary">System Specs</a>
           </div>
-
         </div>
       </section>
     </main>
