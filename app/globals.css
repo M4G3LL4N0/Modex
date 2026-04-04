@@ -1,5 +1,7 @@
 :root {
   --bg: #000000;
+  --x: 0px;
+  --y: 0px;
   --text: rgba(255,255,255,0.98);
   --muted: rgba(255,255,255,0.6);
   --muted-2: rgba(255,255,255,0.4);
@@ -41,11 +43,13 @@ html, body {
   inset: 0;
   z-index: -1;
   background:
+    radial-gradient(circle at var(--x) var(--y), rgba(120,180,255,0.08) 0%, transparent 15%),
     radial-gradient(circle at 20% 10%, rgba(100,150,255,0.15), transparent 50%),
     radial-gradient(circle at 80% 30%, rgba(200,120,255,0.1), transparent 50%),
     radial-gradient(circle at 50% 80%, rgba(60,200,255,0.08), transparent 60%);
   backdrop-filter: blur(120px);
   opacity: 0.6;
+  transition: background 0.5s linear;
 }
 
 /* ===== TYPOGRAPHY ===== */
@@ -178,12 +182,26 @@ body::before {
     linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 50%);
   backdrop-filter: blur(80px);
   opacity: 0.8;
+  will-change: transform;
+  transform: translateY(calc(var(--scroll-y) * 0.03));
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hero-content {
   text-align: center;
   max-width: 960px;
   padding: var(--space-xl);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-title {
@@ -227,13 +245,16 @@ body::before {
   color: #0a1020;
   font-weight: 600;
   font-size: 16px;
-  transition: var(--transition);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
   box-shadow:
     0 10px 30px rgba(200,220,255,0.25);
+  will-change: transform;
 }
 
 .button-primary:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
+  box-shadow:
+    0 10px 40px rgba(200,220,255,0.4);
 }
 
 .button-secondary {
@@ -259,12 +280,17 @@ body::before {
   border: 1px solid rgba(255,255,255,0.05);
   backdrop-filter: blur(40px);
   padding: var(--space-xl);
-  transition: var(--transition);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  will-change: transform;
 }
 
 .system-panel:hover {
   background: rgba(255,255,255,0.05);
   border-color: rgba(255,255,255,0.1);
+  transform: translateY(-4px);
+  box-shadow: 
+    0 10px 30px rgba(120, 150, 255, 0.1),
+    0 0 0 1px rgba(255,255,255,0.1);
 }
 
 .panel {

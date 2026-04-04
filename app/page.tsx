@@ -1,4 +1,14 @@
 export default function Page() {
+  useEffect(() => {
+    const handleScroll = () => {
+      document.documentElement.style.setProperty(
+        "--scroll-y",
+        `${window.scrollY}px`
+      );
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <main className="page-shell">
       <div className="global-backdrop" />
