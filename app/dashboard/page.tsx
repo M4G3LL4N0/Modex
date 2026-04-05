@@ -9,8 +9,6 @@ type PredictionResult = {
   recommendation: string;
 };
 
-"use client";
-
 export default function DashboardPage() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<PredictionResult | null>(null);
@@ -49,6 +47,24 @@ export default function DashboardPage() {
 
   return (
     <main className="page-shell">
+      <header className="site-header">
+        <div className="container nav-row">
+          <div className="brand-wrap">
+            <div className="brand-mark">MX</div>
+            <div>
+              <div className="brand-name">MODEX</div>
+              <div className="brand-subtitle">Noaerth Ecosystem Venture</div>
+            </div>
+          </div>
+
+          <nav className="nav-links">
+            <a className="nav-link" href="/">Home</a>
+            <a className="nav-link" href="/technology">Technology</a>
+            <a className="nav-link" href="/investors">Investors</a>
+            <a className="nav-link" href="/dashboard">Dashboard</a>
+          </nav>
+        </div>
+      </header>
 
       <section className="section" style={{ paddingTop: 72 }}>
         <div className="container">
@@ -63,8 +79,8 @@ export default function DashboardPage() {
             and recommendation from the Modex engine.
           </p>
 
-          <div className="grid-2" style={{ marginTop: 48, gap: 48 }}>
-            <div className="glass panel-xl">
+          <div className="split-layout" style={{ marginTop: 30 }}>
+            <div className="glass-card panel-lg">
               <div className="eyebrow">Scenario Input</div>
 
               <textarea
