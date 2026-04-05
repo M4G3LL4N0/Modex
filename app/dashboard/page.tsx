@@ -194,6 +194,11 @@ export default function DashboardPage() {
                           {result.risk_level}
                         </div>
                       </div>
+                      {feedbackError && (
+                        <div className="error-message" style={{ marginTop: 8 }}>
+                          {feedbackError}
+                        </div>
+                      )}
                     </div>
 
                     <div className="glass-card panel" style={{ marginTop: 18 }}>
