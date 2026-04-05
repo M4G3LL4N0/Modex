@@ -356,15 +356,71 @@ export default function DashboardPage() {
               <div className="glass-card panel-lg">
                 <h2 className="card-title">Decision Analysis</h2>
 
-                {/* Score Explanation */}
-                <div className="card-section">
-                  <h3 className="section-title">What this means</h3>
-                  <p className="section-copy">
-                    Your scenario scored {Math.round(result.score * 100)}%, indicating it's{' '}
-                    {result.score > 0.7 ? 'highly favorable' : result.score > 0.4 ? 'moderately favorable' : 'low favorability'}.
-                    With {Math.round(result.confidence * 100)}% confidence, we're{' '}
-                    {result.confidence > 0.8 ? 'very certain' : result.confidence > 0.5 ? 'fairly certain' : 'somewhat uncertain'} about this assessment.
-                  </p>
+                {/* Headline Score */}
+                <div className="card-section" style={{ textAlign: 'center', marginBottom: '32px' }}>
+                  <div style={{
+                    fontSize: '48px',
+                    fontWeight: '800',
+                    lineHeight: 1,
+                    marginBottom: '12px'
+                  }}>
+                    {Math.round(result.score * 100)}%
+                  </div>
+                  <div style={{
+                    fontSize: '24px',
+                    fontWeight: '600',
+                    marginBottom: '12px'
+                  }}>
+                    Decision Score
+                  </div>
+                  <div style={{
+                    fontSize: '18px',
+                    opacity: 0.9,
+                    fontWeight: 500
+                  }}>
+                    {result.score > 0.75 
+                      ? 'This looks like a strong decision 📈' 
+                      : result.score > 0.45 
+                        ? 'This decision could go either way 🤔'
+                        : 'This looks weak, reconsider 🚩'}
+                  </div>
+                </div>
+
+                {/* Confidence Indicator */}
+                <div className="card-section" style={{ textAlign: 'center', margin: '0 auto 24px', maxWidth: '300px' }}>
+                  <div style={{ 
+                    fontSize: '14px',
+                    opacity: 0.8,
+                    marginBottom: '8px'
+                  }}>
+                    Confidence Level
+                  </div>
+                  <div style={{
+                    height: '6px',
+                    borderRadius: '3px',
+                    background: 'rgba(255,255,255,0.1)',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      width: `${Math.round(result.confidence * 100)}%`,
+                      height: '100%',
+                      background: `linear-gradient(to right, 
+                        ${result.confidence > 0.8 ? '#10b981' : 
+                          result.confidence > 0.5 ? '#f59e0b' : '#ef4444'})`
+                    }}/>
+                  </div>
+                  <div style={{ 
+                    fontSize: '13px',
+                    opacity: 0.7,
+                    marginTop: '8px',
+                    fontStyle: 'italic'
+                  }}>
+                    {result.confidence > 0.85 
+                      ? 'High confidence in this analysis'
+                      : result.confidence > 0.6 
+                        ? 'Moderate confidence - consider multiple perspectives'
+                        : 'Lower confidence - trust your intuition too'}
+                  </div>
                 </div>
 
                 {/* Risk Interpretation */}
