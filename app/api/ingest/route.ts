@@ -46,10 +46,13 @@ export async function POST(req: Request) {
       embedding_length: embedding.length,
     });
 
-  } catch (err) {
-    console.error('Ingestion failed:', err);
+  } catch (error) {
+    console.error('Ingestion failed:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { 
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : String(error)
+      },
       { status: 500 }
     );
   }

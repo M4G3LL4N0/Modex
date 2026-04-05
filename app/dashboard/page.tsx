@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { NextResponse } from "next/server";
 import "./dashboard.css";
 
 type PredictionResult = {

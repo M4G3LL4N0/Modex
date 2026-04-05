@@ -21,9 +21,11 @@ export type HistoryItem = {
 export async function GET() {
   try {
     const supabase = getSupabase();
-
     if (!supabase) {
-      return NextResponse.json({ items: [] });
+      return NextResponse.json(
+        { items: [] },
+        { status: 200 }
+      );
     }
 
     const { data: predictions, error } = await supabase
