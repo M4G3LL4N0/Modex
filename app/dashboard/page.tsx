@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import "./dashboard.css";
 
 type PredictionResult = {
   score: number;
@@ -136,17 +137,53 @@ export default function DashboardPage() {
 
             {result && (
               <div className="glass-card panel-lg">
-                <h2 className="card-title">Result</h2>
+                <h2 className="card-title">Decision Analysis</h2>
 
-                <div style={{ marginTop: 16 }}>
-                  <div>Score: {Math.round(result.score * 100)}%</div>
-                  <div>Confidence: {Math.round(result.confidence * 100)}%</div>
-                  <div>Risk: {result.risk_level}</div>
+                {/* Score Explanation */}
+                <div className="card-section">
+                  <h3 className="section-title">What this means</h3>
+                  <p className="section-copy">
+                    Your scenario scored {Math.round(result.score * 100)}%, indicating it's{' '}
+                    {result.score > 0.7 ? 'highly favorable' : result.score > 0.4 ? 'moderately favorable' : 'low favorability'}.
+                    With {Math.round(result.confidence * 100)}% confidence, we're{' '}
+                    {result.confidence > 0.8 ? 'very certain' : result.confidence > 0.5 ? 'fairly certain' : 'somewhat uncertain'} about this assessment.
+                  </p>
                 </div>
 
-                <p style={{ marginTop: 16 }}>
-                  {result.recommendation}
-                </p>
+                {/* Risk Interpretation */}
+                <div className="card-section">
+                  <h3 className="section-title">Risk Interpretation</h3>
+                  <p className="section-copy">
+                    The {result.risk_level} risk level suggests{' '}
+                    {result.risk_level === 'high' ? 'significant potential challenges' :
+                     result.risk_level === 'moderate' ? 'manageable risks with proper planning' :
+                     'minimal expected complications'}.
+                  </p>
+                </div>
+
+                {/* Suggested Action */}
+                <div className="card-section">
+                  <h3 className="section-title">Suggested Action</h3>
+                  <p className="section-copy">
+                    {result.recommendation}
+                  </p>
+                </div>
+
+                {/* Metrics Summary */}
+                <div className="metrics-summary">
+                  <div className="metric">
+                    <div className="metric-label">Score</div>
+                    <div className="metric-value">{Math.round(result.score * 100)}%</div>
+                  </div>
+                  <div className="metric">
+                    <div className="metric-label">Confidence</div>
+                    <div className="metric-value">{Math.round(result.confidence * 100)}%</div>
+                  </div>
+                  <div className="metric">
+                    <div className="metric-label">Risk</div>
+                    <div className="metric-value">{result.risk_level}</div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
