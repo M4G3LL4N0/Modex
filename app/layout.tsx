@@ -11,6 +11,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="page-shell">
+        <div className="global-backdrop" />
         <Header />
         {children}
         <Footer />
