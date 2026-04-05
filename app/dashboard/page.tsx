@@ -79,8 +79,30 @@ export default function DashboardPage() {
   const [isPro, setIsPro] = useState(false);
   const [history, setHistory] = useState<any[]>([]);
   const [accuracy, setAccuracy] = useState<number | null>(null);
+  const [dailyDecision, setDailyDecision] = useState<string>('');
+  const [isEditingDecision, setIsEditingDecision] = useState(false);
 
   const LIMIT = 5;
+
+  // Load daily decision from localStorage
+  useEffect(() => {
+    const today = new Date().toDateString();
+    const stored = localStorage.getItem('dailyDecision');
+    if (stored) {
+      const { date, decision } = JSON.parse(stored);
+      if (date === today) {
+        setDailyDecision(decision);
+      }
+    }
+  }, []);
+
+  // Save daily decision to localStorage
+  const saveDailyDecision = (decision: string) => {
+    const today = new Date().toDateString();
+    localStorage.setItem('dailyDecision', JSON.stringify({ date: today, decision }));
+    setDailyDecision(decision);
+    setIsEditingDecision(false);
+  };
 
   useEffect(() => {
     // Fetch history and accuracy
@@ -159,6 +181,49 @@ export default function DashboardPage() {
 
       <section className="section" style={{ paddingTop: 80 }}>
         <div className="container">
+
+          {/* Daily Decision Prompt */}
+          <div className="glass-card panel-lg" style={{ marginBottom: 30 }}>
+            <h2 className="card-title">Today's Decision</h2>
+            {isEditingDecision || !dailyDecision ? (
+              <div style={{ marginTop: 16 }}>
+                <textarea
+                  className="textarea-box"
+                  placeholder="What’s the most important decision you need to make today?"
+                  value={dailyDecision}
+                  onChange={(e) => setDailyDecision(e.target.value)}
+                  style={{ minHeight: 80 }}
+                />
+                <button
+                  className="button-primary"
+                  onClick={() => saveDailyDecision(dailyDecision)}
+                  style={{ marginTop: 12 }}
+                >
+                  Save Decision
+                </button>
+              </div>
+            ) : (
+              <div style={{ marginTop: 16 }}>
+                <div style={{ 
+                  fontSize: 16,
+                  lineHeight: 1.5,
+                  whiteSpace: 'pre-wrap',
+                  padding: '12px 16px',
+                  borderRadius: 8,
+                  backgroundColor: 'rgba(255,255,255,0.05)'
+                }}>
+                  {dailyDecision}
+                </div>
+                <button
+                  className="button-secondary"
+                  onClick={() => setIsEditingDecision(true)}
+                  style={{ marginTop: 12 }}
+                >
+                  Edit Decision
+                </button>
+              </div>
+            )}
+          </div>
 
           <h1 className="section-title">Run a scenario</h1>
           <p className="section-copy">
