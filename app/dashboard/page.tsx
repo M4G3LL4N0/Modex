@@ -193,15 +193,35 @@ export default function DashboardPage() {
                 style={{
                   marginTop: 16,
                   borderColor: "rgba(255,255,255,0.2)",
+                  padding: '20px',
+                  textAlign: 'center'
                 }}
               >
-                <div style={{ marginBottom: 8 }}>Upgrade to Pro to continue</div>
+                <div style={{ 
+                  fontSize: '18px',
+                  marginBottom: '12px',
+                  fontWeight: '500'
+                }}>
+                  You've reached your free limit
+                </div>
+                <div style={{
+                  fontSize: '14px',
+                  opacity: 0.8,
+                  marginBottom: '20px'
+                }}>
+                  Upgrade to continue improving your decisions
+                </div>
                 <button 
                   className="button-primary"
                   onClick={() => setIsPro(true)}
-                  style={{ width: '100%' }}
+                  style={{ 
+                    width: '100%',
+                    padding: '12px',
+                    fontSize: '16px',
+                    fontWeight: '500'
+                  }}
                 >
-                  Upgrade
+                  Upgrade to Pro
                 </button>
               </div>
             )}
