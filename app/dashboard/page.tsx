@@ -273,14 +273,14 @@ export default function DashboardPage() {
                   marginBottom: '12px',
                   fontWeight: '500'
                 }}>
-                  You've reached your free limit
+                  You've used your free decisions
                 </div>
                 <div style={{
                   fontSize: '14px',
                   opacity: 0.8,
                   marginBottom: '20px'
                 }}>
-                  Upgrade to continue improving your decisions
+                  Upgrade to keep improving your judgment
                 </div>
                 <button 
                   className="button-primary"

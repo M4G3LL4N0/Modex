@@ -35,14 +35,14 @@ export default function Page() {
             <div className="hero-input">
               <textarea
                 className="textarea-box"
-                placeholder="Describe a decision you're trying to make..."
+                placeholder="Should I take this job?\nShould I invest in this?\nShould I text her again?"
                 ref={inputRef}
               />
               <button 
                 className="button-primary"
                 onClick={handleSubmit}
               >
-                Run Scenario
+                Analyze my decision
               </button>
             </div>
             <p className="hero-subtext">
