@@ -109,7 +109,7 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      <section className="section" style={{ paddingTop: 72 }}>
+      <section className="section" style={{ paddingTop: 72, paddingBottom: 0 }}>
         <div className="container">
           <div className="section-label">
             <span className="section-label-dot" />
@@ -122,7 +122,8 @@ export default function DashboardPage() {
             and recommendation from the Modex engine.
           </p>
 
-          <div className="split-layout" style={{ marginTop: 30 }}>
+          <div className="stack" style={{ marginTop: 48, gap: 32 }}>
+            <div className="split-layout" style={{ gap: 32 }}>
             <div className="glass-card panel-lg">
               <div className="eyebrow">Scenario Input</div>
 
@@ -153,16 +154,15 @@ export default function DashboardPage() {
               </div>
 
               {error ? (
-                <div
-                  className="glass-card panel"
-                  style={{
-                    marginTop: 18,
-                    borderColor: "rgba(255, 120, 120, 0.22)",
-                    background: "rgba(255, 80, 80, 0.08)",
-                    color: "#ffd4d4",
-                  }}
-                >
-                  {error}
+                <div className="glass-card panel" style={{ 
+                  marginTop: 18,
+                  borderColor: "rgba(255, 120, 120, 0.12)",
+                  background: "rgba(255, 80, 80, 0.04)",
+                  color: "var(--muted)"
+                }}>
+                  <p className="card-copy" style={{ margin: 0 }}>
+                    {error.includes("failed") ? error : `Unable to analyze scenario: ${error}`}
+                  </p>
                 </div>
               ) : null}
             </div>
@@ -223,9 +223,28 @@ export default function DashboardPage() {
                     </div>
                   </>
                 ) : (
-                  <p className="card-copy" style={{ marginTop: 16 }}>
-                    No prediction yet. Submit a scenario to preview the decision layer.
-                  </p>
+                  <div style={{ marginTop: 16 }}>
+                    <p className="card-copy" style={{ color: 'var(--muted-2)' }}>
+                      {isLoading 
+                        ? "Analyzing scenario..." 
+                        : "Describe a scenario to get a machine-backed prediction."}
+                    </p>
+                    {isLoading && (
+                      <div style={{
+                        marginTop: 12,
+                        height: 2,
+                        background: 'var(--border)',
+                        overflow: 'hidden'
+                      }}>
+                        <div style={{
+                          width: '100%',
+                          height: '100%',
+                          background: 'white',
+                          animation: 'loading 2s ease-in-out infinite'
+                        }}></div>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
 
