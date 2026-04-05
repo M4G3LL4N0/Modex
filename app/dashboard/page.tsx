@@ -189,7 +189,7 @@ export default function DashboardPage() {
               <div style={{ marginTop: 16 }}>
                 <textarea
                   className="textarea-box"
-                  placeholder="What’s the most important decision you need to make today?"
+                  placeholder="What's the most important decision you need to make today?"
                   value={dailyDecision}
                   onChange={(e) => setDailyDecision(e.target.value)}
                   style={{ minHeight: 80 }}
@@ -249,8 +249,8 @@ export default function DashboardPage() {
                 {usage >= LIMIT
                   ? "Limit reached"
                   : isLoading
-                  ? "Running..."
-                  : "Run Prediction"}
+                  ? "Analyzing..."
+                  : "Analyze"}
               </button>
             </div>
 
