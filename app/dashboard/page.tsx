@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./dashboard.css";
 
 type PredictionResult = {
@@ -11,14 +11,92 @@ type PredictionResult = {
 };
 
 export default function DashboardPage() {
+  // Add some basic styles inline since we don't have access to the CSS file
+  const styles = {
+    historyList: {
+      marginTop: '16px',
+    },
+    historyItem: {
+      padding: '12px 0',
+      borderBottom: '1px solid rgba(255,255,255,0.1)',
+      '&:last-child': {
+        borderBottom: 'none',
+      },
+    },
+    historyContent: {
+      fontSize: '14px',
+      opacity: 0.8,
+      marginBottom: '8px',
+    },
+    historyStats: {
+      display: 'flex',
+      gap: '12px',
+      fontSize: '12px',
+    },
+    historyScore: {
+      opacity: 0.6,
+    },
+    historyOutcome: {
+      fontWeight: '500',
+      '&.success': {
+        color: '#4ade80',
+      },
+      '&.failure': {
+        color: '#f87171',
+      },
+    },
+    emptyState: {
+      opacity: 0.6,
+      fontSize: '14px',
+      textAlign: 'center',
+      padding: '16px 0',
+    },
+    accuracyStats: {
+      marginTop: '16px',
+      textAlign: 'center',
+    },
+    accuracyPercent: {
+      fontSize: '24px',
+      fontWeight: '500',
+    },
+    accuracyCount: {
+      fontSize: '14px',
+      opacity: 0.6,
+      marginTop: '4px',
+    },
+  };
   const [input, setInput] = useState("");
   const [result, setResult] = useState<PredictionResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [usage, setUsage] = useState(0);
   const [isPro, setIsPro] = useState(false);
+  const [history, setHistory] = useState<any[]>([]);
+  const [accuracy, setAccuracy] = useState<number | null>(null);
 
   const LIMIT = 5;
+
+  useEffect(() => {
+    // Fetch history and accuracy
+    async function fetchData() {
+      try {
+        const [historyRes, accuracyRes] = await Promise.all([
+          fetch('/api/history'),
+          fetch('/api/accuracy')
+        ]);
+        
+        const historyData = await historyRes.json();
+        const accuracyData = await accuracyRes.json();
+        
+        setHistory(historyData.items || []);
+        setAccuracy(accuracyData.accuracy || null);
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   async function runPrediction() {
     if (!isPro && usage >= LIMIT) return;
@@ -127,6 +205,54 @@ export default function DashboardPage() {
                 </button>
               </div>
             )}
+          </div>
+
+          {/* DECISION LOG */}
+          <div className="glass-card panel-lg" style={{ marginTop: 30 }}>
+            <h2 className="card-title">Your Decision Log</h2>
+            
+            {history.length > 0 ? (
+              <div className="history-list">
+                {history.map((item) => (
+                  <div key={item.id} className="history-item">
+                    <div className="history-content">
+                      {item.input?.content || 'No content'}
+                    </div>
+                    <div className="history-stats">
+                      <div className="history-score">
+                        Score: {Math.round((item.prediction?.score || 0) * 100)}%
+                      </div>
+                      {item.outcome !== undefined && (
+                        <div className={`history-outcome ${item.outcome ? 'success' : 'failure'}`}>
+                          {item.outcome ? '✅ Correct' : '❌ Incorrect'}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state">No decisions logged yet</div>
+            )}
+          </div>
+
+          {/* ACCURACY */}
+          <div className="glass-card panel-lg" style={{ marginTop: 30 }}>
+            <h2 className="card-title">Track Your Accuracy</h2>
+            <div className="accuracy-stats">
+              {accuracy !== null ? (
+                <>
+                  <div className="accuracy-percent">
+                    {Math.round(accuracy * 100)}% correct
+                  </div>
+                  <div className="accuracy-count">
+                    Based on {history.filter(h => h.outcome !== undefined).length} decisions
+                  </div>
+                </>
+              ) : (
+                <div className="empty-state">Not enough data to calculate accuracy</div>
+              )}
+            </div>
           </div>
 
           {/* RESULT */}
