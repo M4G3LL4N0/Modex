@@ -15,11 +15,12 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [usage, setUsage] = useState(0);
+  const [isPro, setIsPro] = useState(false);
 
   const LIMIT = 5;
 
   async function runPrediction() {
-    if (usage >= LIMIT) return;
+    if (!isPro && usage >= LIMIT) return;
 
     setIsLoading(true);
     setError(null);
@@ -104,7 +105,7 @@ export default function DashboardPage() {
             </div>
 
             <div style={{ marginTop: 10, fontSize: 12, opacity: 0.6 }}>
-              {usage}/{LIMIT} free runs used
+              {isPro ? 'Pro user' : `${usage}/${LIMIT} free runs used`}
             </div>
 
             {usage >= LIMIT && (
@@ -115,7 +116,14 @@ export default function DashboardPage() {
                   borderColor: "rgba(255,255,255,0.2)",
                 }}
               >
-                Upgrade to Pro for unlimited predictions.
+                <div style={{ marginBottom: 8 }}>Upgrade to Pro to continue</div>
+                <button 
+                  className="button-primary"
+                  onClick={() => setIsPro(true)}
+                  style={{ width: '100%' }}
+                >
+                  Upgrade
+                </button>
               </div>
             )}
           </div>
