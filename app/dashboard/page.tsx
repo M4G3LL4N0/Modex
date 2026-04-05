@@ -379,10 +379,10 @@ export default function DashboardPage() {
                     fontWeight: 500
                   }}>
                     {result.score > 0.75 
-                      ? 'This looks like a strong decision 📈' 
+                      ? 'This appears to be a strong decision 📈' 
                       : result.score > 0.45 
-                        ? 'This decision could go either way 🤔'
-                        : 'This looks weak, reconsider 🚩'}
+                        ? 'This decision has mixed signals 🤔'
+                        : 'This decision may not be favorable 🚩'}
                   </div>
                 </div>
 
