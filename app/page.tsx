@@ -1,4 +1,18 @@
+"use client";
+
+import { useEffect } from "react";
+
 export default function Page() {
+  useEffect(() => {
+    const handleMouse = (e: MouseEvent) => {
+      document.documentElement.style.setProperty("--x", `${e.clientX}px`);
+      document.documentElement.style.setProperty("--y", `${e.clientY}px`);
+    };
+
+    window.addEventListener("mousemove", handleMouse);
+    return () => window.removeEventListener("mousemove", handleMouse);
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       document.documentElement.style.setProperty(
@@ -6,29 +20,32 @@ export default function Page() {
         `${window.scrollY}px`
       );
     };
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   return (
     <main className="page-shell">
-      <div className="global-backdrop" />
-      
-      <section className="hero-section">
-        <div className="hero-backdrop" />
-        
-        <div className="hero-content">
+      <section className="hero">
+        <div className="container">
           <h1 className="hero-title">
-            <span className="gradient-text">Modex</span><br />
-            Intelligence OS
+            Machine intelligence<br />
+            <span className="gradient-text">for decisions.</span>
           </h1>
 
           <p className="hero-copy">
-            The operating system for venture intelligence and decision-making.
+            Modex is building a decision intelligence layer that transforms raw
+            scenarios into scored judgment, confidence, and action.
           </p>
 
-          <div className="hero-actions">
-            <a href="/dashboard" className="button-primary">Launch OS</a>
-            <a href="/technology" className="button-secondary">System Specs</a>
+          <div style={{ marginTop: 24, display: "flex", gap: 12 }}>
+            <a href="/dashboard" className="button-primary">
+              Open Dashboard
+            </a>
+            <a href="/technology" className="button-secondary">
+              View Tech
+            </a>
           </div>
         </div>
       </section>
