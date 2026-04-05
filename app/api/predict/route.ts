@@ -1,12 +1,24 @@
 import { NextResponse } from "next/server";
-import { getSupabase } from "@/lib/supabase";
+import { getSupabase } from "../../../lib/supabase";
+
+type PredictionResult = {
+  score: number;
+  confidence: number;
+  risk_level: "low" | "moderate" | "high";
+  recommendation: string;
+};
 
 export async function POST(req: Request) {
   try {
-    const { content } = await req.json();
+    const body = await req.json();
+    const content =
+      typeof body?.content === "string" ? body.content.trim() : "";
 
     if (!content) {
-      return NextResponse.json({ error: "Missing content" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing content" },
+        { status: 400 }
+      );
     }
 
     const supabase = getSupabase();
@@ -23,7 +35,7 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ prediction });
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: "Failed" }, { status: 500 });
   }
 }
