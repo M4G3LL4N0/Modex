@@ -1,7 +1,10 @@
 import "./globals.css";
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
 import MouseTracker from "./mouse-tracker";
+
+export const metadata = {
+  title: "Modex",
+  description: "Machine intelligence for decisions.",
+};
 
 export default function RootLayout({
   children,
@@ -10,11 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="page-shell">
-        <div className="global-backdrop" />
-        <Header />
+      <body>
+        <MouseTracker />
         {children}
-        <Footer />
       </body>
     </html>
   );

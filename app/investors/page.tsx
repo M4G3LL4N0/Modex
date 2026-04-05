@@ -1,8 +1,7 @@
-import Layout from "@/components/Layout";
-
 export default function InvestorsPage() {
   return (
-    <Layout>
+    <main className="page-shell">
+      <header className="site-header">
         <div className="container nav-row">
           <div className="brand-wrap">
             <div className="brand-mark">MX</div>
