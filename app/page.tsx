@@ -20,13 +20,13 @@ export default function Page() {
         <div className="container">
           <div className="hero-content">
             <h1 className="hero-title">
-              Machine Intelligence<br />
+              The Intelligence Layer<br />
               <span className="gradient-text">for Decisions</span>
             </h1>
             <p className="hero-copy">
-              Modex is building the operating layer for machine-backed judgment,
-              prediction, and adaptive intelligence. The first infrastructure for
-              structured operational decisions.
+              Modex transforms raw scenarios into structured judgment, confidence,
+              and action. The first infrastructure for machine-backed operational
+              intelligence.
             </p>
             <div className="hero-actions">
               <a href="/dashboard" className="button-primary">
@@ -40,16 +40,42 @@ export default function Page() {
         </div>
       </section>
 
-      {/* System Thesis */}
+      {/* Why This Matters */}
       <section className="section">
         <div className="container">
           <div className="glass-panel panel-xl">
-            <h2 className="section-title">The Decision Layer</h2>
+            <h2 className="section-title">Why This Matters</h2>
             <p className="section-copy">
-              Modex transforms raw scenarios into scored judgment, confidence,
-              and action. We're building the infrastructure for machine-backed
-              operational intelligence.
+              Operational decisions remain unstructured and subjective. Humans guess,
+              systems react. We're building the infrastructure to assist and augment
+              human judgment with machine intelligence.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="section">
+        <div className="container">
+          <div className="grid-3">
+            <div className="glass-panel panel-lg">
+              <h3 className="panel-title">Input</h3>
+              <p className="panel-copy">
+                Structured scenario analysis with clear parameters and context.
+              </p>
+            </div>
+            <div className="glass-panel panel-lg">
+              <h3 className="panel-title">Prediction</h3>
+              <p className="panel-copy">
+                Machine-backed reasoning that surfaces insights and patterns.
+              </p>
+            </div>
+            <div className="glass-panel panel-lg">
+              <h3 className="panel-title">Outcome</h3>
+              <p className="panel-copy">
+                Actionable recommendations with confidence scoring and risk analysis.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -108,14 +134,15 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Strategic Expansion */}
+      {/* Long Term Vision */}
       <section className="section">
         <div className="container">
           <div className="glass-panel panel-xl">
-            <h2 className="section-title">Infrastructure for Intelligence</h2>
+            <h2 className="section-title">The Decision Infrastructure</h2>
             <p className="section-copy">
-              Modex is evolving from a product into a platform - the foundation
-              for machine-backed operational systems.
+              Modex is building the foundational layer for machine-backed operational
+              intelligence. We're creating the platform for structured decision-making
+              at scale.
             </p>
           </div>
         </div>
