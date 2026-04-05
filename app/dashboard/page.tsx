@@ -336,6 +336,21 @@ export default function DashboardPage() {
                     <div className="metric-value">{result.risk_level}</div>
                   </div>
                 </div>
+
+                {/* Share Button */}
+                <div style={{ marginTop: 20 }}>
+                  <button
+                    className="button-primary"
+                    onClick={() => {
+                      const shareText = `Modex scored this decision:\nScore: ${Math.round(result.score * 100)}%\nConfidence: ${Math.round(result.confidence * 100)}%\nRisk: ${result.risk_level}\n\nTry it yourself: ${window.location.origin}`;
+                      navigator.clipboard.writeText(shareText);
+                      alert('Copied to clipboard! Share this result anywhere.');
+                    }}
+                    style={{ width: '100%' }}
+                  >
+                    Share this result
+                  </button>
+                </div>
               </div>
             )}
           </div>
