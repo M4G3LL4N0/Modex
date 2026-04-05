@@ -9,6 +9,8 @@ type PredictionResult = {
   recommendation: string;
 };
 
+"use client";
+
 export default function DashboardPage() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<PredictionResult | null>(null);

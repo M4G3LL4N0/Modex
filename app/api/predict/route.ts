@@ -1,12 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabase } from "../../../lib/supabase";
 
-type PredictionResult = {
-  score: number;
-  confidence: number;
-  risk_level: "low" | "moderate" | "high";
-  recommendation: string;
-};
+import { PredictionResult } from "../../../lib/engine/predict";
 
 export async function POST(req: Request) {
   try {
