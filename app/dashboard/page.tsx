@@ -65,7 +65,13 @@ export default function DashboardPage() {
       marginTop: '4px',
     },
   };
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('input') || '';
+    }
+    return '';
+  });
   const [result, setResult] = useState<PredictionResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
