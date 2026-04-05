@@ -29,7 +29,8 @@ export async function GET() {
     const { data: predictions, error } = await supabase
       .from("predictions")
       .select("*")
-      .limit(50);
+      .order("created_at", { ascending: false })
+      .limit(20);
 
     if (error || !predictions) {
       return NextResponse.json({ items: [] });

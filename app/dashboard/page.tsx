@@ -15,6 +15,49 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [historyItems, setHistoryItems] = useState<any[]>([]);
+  const [systemAccuracy, setSystemAccuracy] = useState<number | null>(null);
+
+  async function fetchHistory() {
+    try {
+      const res = await fetch("/api/history");
+      const data = await res.json();
+      setHistoryItems(data.items || []);
+    } catch (error) {
+      console.error("Failed to fetch history:", error);
+    }
+  }
+
+  async function handleFeedback(correct: boolean) {
+    try {
+      await fetch("/api/outcome", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prediction_id: result?.id,
+          success: correct,
+        }),
+      });
+
+      // Refresh accuracy
+      fetchAccuracy();
+    } catch (error) {
+      console.error("Failed to submit feedback:", error);
+    }
+  }
+
+  async function fetchAccuracy() {
+    try {
+      const res = await fetch("/api/accuracy");
+      const data = await res.json();
+      setSystemAccuracy(data.accuracy);
+    } catch (error) {
+      console.error("Failed to fetch accuracy:", error);
+    }
+  }
+
   async function runPrediction() {
     setIsLoading(true);
     setError(null);
@@ -156,6 +199,22 @@ export default function DashboardPage() {
                     <div className="glass-card panel" style={{ marginTop: 18 }}>
                       <div className="eyebrow">Recommendation</div>
                       <p className="card-copy">{result.recommendation}</p>
+                      
+                      <div className="feedback-buttons" style={{ marginTop: 16 }}>
+                        <button
+                          className="button-secondary"
+                          onClick={() => handleFeedback(true)}
+                        >
+                          Correct
+                        </button>
+                        <button
+                          className="button-secondary"
+                          onClick={() => handleFeedback(false)}
+                          style={{ marginLeft: 8 }}
+                        >
+                          Incorrect
+                        </button>
+                      </div>
                     </div>
                   </>
                 ) : (
@@ -167,10 +226,48 @@ export default function DashboardPage() {
 
               <div className="glass-card panel-lg">
                 <div className="eyebrow">System Status</div>
-                <p className="card-copy">
-                  This is the first operator-facing Modex surface. The next layer is richer memory,
-                  historical outcomes, stronger analytics, and more adaptive inference.
+                <div className="system-stats">
+                  <div className="system-stat">
+                    <span className="stat-label">System Accuracy</span>
+                    <span className="stat-value">
+                      {systemAccuracy !== null 
+                        ? `${Math.round(systemAccuracy * 100)}%`
+                        : "Calculating..."}
+                    </span>
+                  </div>
+                </div>
+                
+                <p className="card-copy" style={{ marginTop: 16 }}>
+                  This system learns from every outcome. Your feedback improves its accuracy.
                 </p>
+              </div>
+            </div>
+
+            <div className="glass-card panel-lg" style={{ marginTop: 32 }}>
+              <div className="eyebrow">Recent Scenarios</div>
+              
+              <div className="history-list">
+                {historyItems.map((item) => (
+                  <div key={item.id} className="history-item glass-card panel">
+                    <div className="history-preview">
+                      {item.input_text?.slice(0, 100) || "No input text"}...
+                    </div>
+                    <div className="history-stats">
+                      <div className="history-stat">
+                        <span className="stat-label">Score</span>
+                        <span className="stat-value">
+                          {Math.round((item.score || 0) * 100)}%
+                        </span>
+                      </div>
+                      <div className="history-stat">
+                        <span className="stat-label">Confidence</span>
+                        <span className="stat-value">
+                          {Math.round((item.confidence || 0) * 100)}%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

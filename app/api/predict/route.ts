@@ -18,6 +18,7 @@ export async function POST(req: Request) {
 
     const supabase = getSupabase();
 
+    // TODO: Replace with actual prediction logic
     const prediction: PredictionResult = {
       score: 0.7,
       confidence: 0.8,
@@ -26,7 +27,23 @@ export async function POST(req: Request) {
     };
 
     if (supabase) {
-      await supabase.from("inputs").insert([{ content }]);
+      const { data, error } = await supabase
+        .from("predictions")
+        .insert([
+          {
+            input_text: content,
+            score: prediction.score,
+            confidence: prediction.confidence,
+            risk_level: prediction.risk_level,
+            recommendation: prediction.recommendation,
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Failed to save prediction:", error);
+      }
     }
 
     return NextResponse.json({ prediction });
