@@ -20,89 +20,24 @@ export default function Page() {
         <div className="container">
           <div className="hero-content">
             <h1 className="hero-title">
-              The Intelligence Layer<br />
-              <span className="gradient-text">for Decisions</span>
+              Stop Guessing.<br />
+              <span className="gradient-text">Start Scoring Decisions.</span>
             </h1>
             <p className="hero-copy">
-              Modex transforms raw scenarios into structured judgment, confidence,
-              and action. The first infrastructure for machine-backed operational
-              intelligence.
+              Modex turns real-world scenarios into structured judgment, confidence, and action.
             </p>
-            <div className="hero-actions">
+            <div className="hero-input">
+              <textarea
+                className="textarea-box"
+                placeholder="Describe your situation..."
+              />
               <a href="/dashboard" className="button-primary">
-                Open Dashboard
-              </a>
-              <a href="/technology" className="button-secondary">
-                View Technology
+                Analyze
               </a>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Why This Matters */}
-      <section className="section">
-        <div className="container">
-          <div className="glass-panel panel-xl">
-            <h2 className="section-title">Why This Matters</h2>
-            <p className="section-copy">
-              Operational decisions remain unstructured and subjective. Humans guess,
-              systems react. We're building the infrastructure to assist and augment
-              human judgment with machine intelligence.
+            <p className="hero-subtext">
+              Used for decisions across business, relationships, and risk.
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="section">
-        <div className="container">
-          <div className="grid-3">
-            <div className="glass-panel panel-lg">
-              <h3 className="panel-title">Input</h3>
-              <p className="panel-copy">
-                Structured scenario analysis with clear parameters and context.
-              </p>
-            </div>
-            <div className="glass-panel panel-lg">
-              <h3 className="panel-title">Prediction</h3>
-              <p className="panel-copy">
-                Machine-backed reasoning that surfaces insights and patterns.
-              </p>
-            </div>
-            <div className="glass-panel panel-lg">
-              <h3 className="panel-title">Outcome</h3>
-              <p className="panel-copy">
-                Actionable recommendations with confidence scoring and risk analysis.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Capabilities */}
-      <section className="section">
-        <div className="container">
-          <div className="grid-3">
-            <div className="glass-panel panel-lg">
-              <h3 className="panel-title">Prediction</h3>
-              <p className="panel-copy">
-                Structured scenario analysis with scored outcomes and confidence
-                levels.
-              </p>
-            </div>
-            <div className="glass-panel panel-lg">
-              <h3 className="panel-title">Inference</h3>
-              <p className="panel-copy">
-                Machine-backed reasoning that surfaces insights and patterns.
-              </p>
-            </div>
-            <div className="glass-panel panel-lg">
-              <h3 className="panel-title">Learning</h3>
-              <p className="panel-copy">
-                Outcome-driven improvement that compounds over time.
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -111,11 +46,7 @@ export default function Page() {
       <section className="section">
         <div className="container">
           <div className="glass-panel panel-xl">
-            <h2 className="section-title">The Modex Engine</h2>
-            <p className="section-copy">
-              A real-time decision intelligence layer that transforms operator
-              input into structured recommendations.
-            </p>
+            <h2 className="section-title">How It Works</h2>
             <div className="engine">
               <div className="metric">
                 <span className="metric-label">Prediction Accuracy</span>
@@ -130,20 +61,6 @@ export default function Page() {
                 <span className="metric-value">142</span>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Long Term Vision */}
-      <section className="section">
-        <div className="container">
-          <div className="glass-panel panel-xl">
-            <h2 className="section-title">The Decision Infrastructure</h2>
-            <p className="section-copy">
-              Modex is building the foundational layer for machine-backed operational
-              intelligence. We're creating the platform for structured decision-making
-              at scale.
-            </p>
           </div>
         </div>
       </section>
