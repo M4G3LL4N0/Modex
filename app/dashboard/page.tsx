@@ -61,7 +61,7 @@ export default function DashboardPage() {
             and recommendation from the Modex engine.
           </p>
 
-          <div className="grid-2" style={{ marginTop: 40, gap: 40 }}>
+          <div className="grid-2" style={{ marginTop: 48, gap: 48 }}>
             <div className="glass panel-xl">
               <div className="eyebrow">Scenario Input</div>
 

@@ -43,18 +43,18 @@
 }
 
 .section-title {
-  font-size: clamp(72px, 10vw, 120px);
+  font-size: clamp(80px, 12vw, 140px);
   font-weight: 800;
-  line-height: 0.9;
-  letter-spacing: -0.06em;
+  line-height: 0.88;
+  letter-spacing: -0.08em;
   margin: 0;
 }
 
 .section-copy {
-  font-size: 20px;
-  line-height: 1.6;
+  font-size: 22px;
+  line-height: 1.5;
   color: var(--muted);
-  max-width: 720px;
+  max-width: 680px;
   margin: var(--space-md) 0 0;
 }
 
@@ -198,8 +198,8 @@ body::before {
   right: 0;
   z-index: 100;
   backdrop-filter: blur(40px);
-  background: rgba(0,0,0,0.4);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.5);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .container {
@@ -423,11 +423,25 @@ body::before {
 .metric {
   display: flex;
   justify-content: space-between;
-  padding: 14px 16px;
-
-  border-radius: 16px;
-
+  align-items: center;
+  padding: 20px 24px;
+  border-radius: 20px;
   background: rgba(255,255,255,0.05);
+  transition: var(--transition);
+}
+
+.metric:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.metric-label {
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.metric-value {
+  font-size: 20px;
+  font-weight: 600;
 }
 
 /* ===== GRID ===== */

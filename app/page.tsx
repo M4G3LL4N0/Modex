@@ -25,7 +25,8 @@ export default function Page() {
             </h1>
             <p className="hero-copy">
               Modex is building the operating layer for machine-backed judgment,
-              prediction, and adaptive intelligence.
+              prediction, and adaptive intelligence. The first infrastructure for
+              structured operational decisions.
             </p>
             <div className="hero-actions">
               <a href="/dashboard" className="button-primary">
@@ -91,16 +92,16 @@ export default function Page() {
             </p>
             <div className="engine">
               <div className="metric">
-                <span>Prediction Accuracy</span>
-                <span>92%</span>
+                <span className="metric-label">Prediction Accuracy</span>
+                <span className="metric-value">92%</span>
               </div>
               <div className="metric">
-                <span>Confidence Threshold</span>
-                <span>0.85</span>
+                <span className="metric-label">Confidence Threshold</span>
+                <span className="metric-value">0.85</span>
               </div>
               <div className="metric">
-                <span>Active Scenarios</span>
-                <span>142</span>
+                <span className="metric-label">Active Scenarios</span>
+                <span className="metric-value">142</span>
               </div>
             </div>
           </div>
