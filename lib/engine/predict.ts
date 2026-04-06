@@ -1,6 +1,5 @@
 import { createEmbedding } from "./embedding";
 import { runLLMDecision } from "./llm";
-import { cosineSimilarity } from "./similarity";
 
 export type PredictionResult = {
   score: number;

@@ -190,7 +190,7 @@ export default function DashboardPage() {
               <div style={{ marginTop: 16 }}>
                 <textarea
                   className="textarea-box"
-                  placeholder="What's the most important decision you need to make today?"
+                  placeholder="What&apos;s the most important decision you need to make today?"
                   value={dailyDecision}
                   onChange={(e) => setDailyDecision(e.target.value)}
                   style={{ minHeight: 80 }}

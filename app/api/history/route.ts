@@ -38,7 +38,7 @@ export async function GET() {
       return NextResponse.json({ items: [] });
     }
 
-    const items: HistoryItem[] = predictions.map((prediction: any) => ({
+    const items: HistoryItem[] = predictions.map((prediction: typeof predictions[number]) => ({
       id: String(prediction.id),
       prediction: {
         score: typeof prediction.score === "number" ? prediction.score : 0,

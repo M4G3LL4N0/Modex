@@ -1,3 +1,5 @@
+import OpenAI from "openai";
+
 export async function createEmbedding(input: string): Promise<number[]> {
   // Fallback deterministic embedding if no API key
   if (!process.env.OPENAI_API_KEY) {

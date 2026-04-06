@@ -12,10 +12,10 @@ export default function InvestorsPage() {
           </div>
 
           <nav className="nav-links">
-            <a className="nav-link" href="/">Home</a>
-            <a className="nav-link" href="/technology">Technology</a>
-            <a className="nav-link" href="/investors">Investors</a>
-            <a className="nav-link" href="/dashboard">Dashboard</a>
+            <Link className="nav-link" href="/">Home</Link>
+            <Link className="nav-link" href="/technology">Technology</Link>
+            <Link className="nav-link" href="/investors">Investors</Link>
+            <Link className="nav-link" href="/dashboard">Dashboard</Link>
           </nav>
         </div>
       </header>
