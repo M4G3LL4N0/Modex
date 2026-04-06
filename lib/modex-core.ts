@@ -185,39 +185,4 @@ export async function discoverFromSignal(signalId: string) {
   }
 }
 
-export async function runExperiment(experimentType: string, payload: unknown) {
-  try {
-    const normalizedType =
-      typeof experimentType === "string" && experimentType.trim()
-        ? experimentType.trim()
-        : "custom";
-
-    const content =
-      typeof payload === "string"
-        ? payload
-        : typeof payload === "object" &&
-          payload !== null &&
-          "content" in payload &&
-          typeof (payload as { content?: unknown }).content === "string"
-        ? ((payload as { content?: string }).content ?? "")
-        : JSON.stringify(payload ?? "");
-
-    const ingested = await ingestSignal(content, normalizedType);
-    const analyzed = await analyzeSignal(content);
-
-    return {
-      ok: true,
-      experiment_type: normalizedType,
-      result: {
-        ingested,
-        analyzed,
-      },
-    };
-  } catch {
-    return {
-      ok: false,
-      experiment_type: experimentType,
-      result: null,
-    };
-  }
-}
+export * from "@/lib/experiments";
