@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { embedText as createEmbedding } from "@/lib/embeddings";
+import { analyzeSignal } from '@/lib/modex-core';
 
 export async function POST(req: Request) {
   try {
@@ -13,17 +13,20 @@ export async function POST(req: Request) {
       );
     }
 
-    const embedding = await createEmbedding(content);
+    const result = await analyzeSignal(content);
     
-    return NextResponse.json({
-      embedding_size: embedding.length,
-      similar_signals: [],
-      similarity_scores: [],
-    });
+    if ('error' in result) {
+      return NextResponse.json(
+        { error: result.error },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Analyze failed:", error);
     return NextResponse.json(
-      { error: "Analyze route failed" },
+      { error: "Analyze failed" },
       { status: 500 }
     );
   }

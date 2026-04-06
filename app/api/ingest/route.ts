@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getSupabase } from '@/lib/supabase';
-import { embedText } from "@/lib/embeddings";
+import { ingestSignal } from '@/lib/modex-core';
 
 interface IngestRequest {
   type: 'text' | 'audio' | 'sequence';
@@ -17,43 +16,14 @@ export async function POST(req: Request) {
     );
   }
 
-  try {
-    const embedding = await embedText(content);
-    const supabase = getSupabase();
-
-    if (!supabase) {
-      return NextResponse.json(
-        { error: 'Supabase client not initialized' },
-        { status: 500 }
-      );
-    }
-
-    const { data, error } = await supabase
-      .from('signals')
-      .insert([
-        {
-          type,
-          content,
-          embedding,
-        }
-      ])
-      .select('id');
-
-    if (error) throw error;
-
-    return NextResponse.json({
-      id: data[0].id,
-      embedding_length: embedding.length,
-    });
-
-  } catch (error) {
-    console.error('Ingestion failed:', error);
+  const result = await ingestSignal(content, type);
+  
+  if ('error' in result) {
     return NextResponse.json(
-      { 
-        error: 'Internal server error',
-        details: error instanceof Error ? error.message : String(error)
-      },
+      { error: result.error },
       { status: 500 }
     );
   }
+
+  return NextResponse.json(result);
 }
