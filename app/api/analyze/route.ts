@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { analyzeSignal } from '@/lib/modex-core';
+import { analyzeSignal } from '../../../lib/modex-core.js';
 
 export async function POST(req: Request) {
   try {

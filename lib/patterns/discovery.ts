@@ -1,8 +1,8 @@
-import { cosineSimilarity } from "@/lib/engine/similarity";
+import { cosineSimilarity } from "../engine/similarity.js";
 import {
   clusterBySimilarity,
   type ClusterSignal,
-} from "@/lib/patterns/clustering";
+} from "./clustering.js";
 
 export type DiscoveryCluster = {
   center_signal: ClusterSignal | null;

@@ -185,4 +185,4 @@ export async function discoverFromSignal(signalId: string) {
   }
 }
 
-export * from "@/lib/experiments";
+export { runExperiment } from "./experiments/index.js";

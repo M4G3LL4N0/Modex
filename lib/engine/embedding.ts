@@ -1,4 +1,7 @@
 export async function createEmbedding(input: string): Promise<number[]> {
+  if (typeof input !== 'string') {
+    return Array(64).fill(0);
+  }
   if (!input) return Array.from({length: 64}, () => 0);
 
   // Stable deterministic fallback

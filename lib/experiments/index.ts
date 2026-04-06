@@ -2,7 +2,7 @@ import {
   analyzeSignal,
   discoverFromSignal,
   ingestSignal,
-} from "@/lib/modex-core";
+} from "../modex-core.js";
 
 function payloadToContent(payload: unknown): string {
   if (typeof payload === "string") return payload;
