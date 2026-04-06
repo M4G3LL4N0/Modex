@@ -3,17 +3,19 @@ import { discoverFromSignal } from '@/lib/modex-core';
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    if (!body || typeof body !== 'object' || !body.signalId) {
+    const { signalId } = await req.json();
+    
+    if (!signalId) {
       return NextResponse.json(
-        { error: "Invalid request body" },
+        { error: "Missing signalId" },
         { status: 400 }
       );
     }
 
-    const result = await discoverFromSignal(body.signalId);
+    const result = await discoverFromSignal(signalId);
     return NextResponse.json(result);
-  } catch {
+  } catch (error) {
+    console.error("Discover failed:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

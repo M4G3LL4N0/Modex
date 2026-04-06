@@ -3,9 +3,8 @@ import { analyzeSignal } from '@/lib/modex-core';
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const content = typeof body?.content === "string" ? body.content.trim() : "";
-
+    const { content } = await req.json();
+    
     if (!content) {
       return NextResponse.json(
         { error: "Missing content" },
@@ -14,19 +13,11 @@ export async function POST(req: Request) {
     }
 
     const result = await analyzeSignal(content);
-    
-    if ('error' in result) {
-      return NextResponse.json(
-        { error: result.error },
-        { status: 500 }
-      );
-    }
-
     return NextResponse.json(result);
   } catch (error) {
     console.error("Analyze failed:", error);
     return NextResponse.json(
-      { error: "Analyze failed" },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
