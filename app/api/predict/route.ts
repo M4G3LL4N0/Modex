@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabase } from "../../../lib/supabase";
 
-import { PredictionResult } from "../../../lib/engine/predict";
+import { PredictionResult } from "@/lib/engine/predict";
 
 export async function POST(req: Request) {
   try {

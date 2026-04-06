@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getSupabase } from '@/lib/supabase';
-import { embedText } from '@/lib/embeddings';
+import { embedText } from "@/lib/embeddings";
 
 interface IngestRequest {
   type: 'text' | 'audio' | 'sequence';

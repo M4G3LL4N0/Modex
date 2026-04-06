@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createEmbedding } from "@/lib/engine/embedding";
+import { embedText as createEmbedding } from "@/lib/embeddings";
 
 export async function POST(req: Request) {
   try {

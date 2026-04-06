@@ -1,11 +1,10 @@
 export function cosineSimilarity(a: number[], b: number[]): number {
   if (!Array.isArray(a) || !Array.isArray(b)) return 0;
   
-  // Use the shorter length if arrays differ
   const len = Math.min(a.length, b.length);
   if (len === 0) return 0;
 
-  // Clean and normalize vectors
+  // Clean vectors
   const cleanA = a.slice(0, len).map(x => Number.isFinite(x) ? x : 0);
   const cleanB = b.slice(0, len).map(x => Number.isFinite(x) ? x : 0);
 
