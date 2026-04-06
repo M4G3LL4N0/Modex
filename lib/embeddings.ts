@@ -1,1 +1,1 @@
-export { createEmbedding as embedText } from "./engine/embedding.js";
+export { createEmbedding as embedText } from "./engine/embedding";

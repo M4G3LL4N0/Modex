@@ -1,6 +1,6 @@
-import { createEmbedding } from "@/lib/engine/embedding";
-import { cosineSimilarity } from "@/lib/engine/similarity";
-import { getSupabase } from "@/lib/supabase";
+import { createEmbedding } from "./engine/embedding";
+import { cosineSimilarity } from "./engine/similarity";
+import { getSupabase } from "./supabase";
 
 type SignalRow = {
   id: string | null;

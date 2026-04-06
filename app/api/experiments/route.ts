@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { runExperiment } from "@/lib/experiments";
+import { runExperiment } from "@/lib/experiments/index";
 
 type ExperimentRequest = {
   experimentType?: string;
