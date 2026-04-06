@@ -1,169 +1,223 @@
-import { embedText } from "@/lib/embeddings";
+import { createEmbedding } from "@/lib/engine/embedding";
 import { cosineSimilarity } from "@/lib/engine/similarity";
 import { getSupabase } from "@/lib/supabase";
 
-export type Signal = {
-  id: string;
-  type: string;
-  content: string;
-  embedding: number[];
-};
-
-export type SimilarSignal = {
-  id: string;
+type SignalRow = {
+  id: string | null;
   type?: string;
   content?: string;
-  similarity: number;
-};
-
-export type SignalCluster = {
-  center_signal: Signal | null;
-  related_signals: SimilarSignal[];
+  embedding?: number[];
 };
 
 export async function ingestSignal(content: string, type: string) {
-  if (!content || !type) {
-    return { ok: false, id: null, type, content, embedding_length: 0 };
-  }
-
   try {
-    const embedding = await embedText(content);
+    const safeContent = typeof content === "string" ? content.trim() : "";
+    const safeType = typeof type === "string" ? type.trim() : "custom";
+
+    if (!safeContent) {
+      return {
+        ok: false,
+        id: null,
+        type: safeType,
+        content: safeContent,
+        embedding_length: 0,
+      };
+    }
+
+    const embedding = await createEmbedding(safeContent);
     const supabase = getSupabase();
 
     if (!supabase) {
-      return { ok: true, id: null, type, content, embedding_length: embedding.length };
+      return {
+        ok: true,
+        id: null,
+        type: safeType,
+        content: safeContent,
+        embedding_length: embedding.length,
+      };
     }
 
-    const { data, error } = await supabase
-      .from('signals')
-      .insert([{ type, content, embedding }])
-      .select('id');
+    const { data } = await supabase
+      .from("signals")
+      .insert([
+        {
+          type: safeType,
+          content: safeContent,
+          embedding,
+        },
+      ])
+      .select("id")
+      .single();
 
-    if (error) {
-      console.error('Ingest failed:', error);
-      return { ok: false, id: null, type, content, embedding_length: embedding.length };
-    }
-
-    return { 
+    return {
       ok: true,
-      id: data[0].id,
+      id: data?.id ?? null,
+      type: safeType,
+      content: safeContent,
+      embedding_length: embedding.length,
+    };
+  } catch {
+    return {
+      ok: false,
+      id: null,
       type,
       content,
-      embedding_length: embedding.length
+      embedding_length: 0,
     };
-  } catch (error) {
-    console.error('Ingest failed:', error);
-    return { ok: false, id: null, type, content, embedding_length: 0 };
   }
 }
 
 export async function analyzeSignal(content: string) {
-  if (!content) {
-    return { 
-      ok: false,
-      embedding_size: 0,
-      similar_signals: [],
-      similarity_scores: []
-    };
-  }
-
   try {
-    const embedding = await embedText(content);
+    const safeContent = typeof content === "string" ? content.trim() : "";
+
+    if (!safeContent) {
+      return {
+        ok: false,
+        embedding_size: 0,
+        similar_signals: [],
+        similarity_scores: [],
+      };
+    }
+
+    const embedding = await createEmbedding(safeContent);
     const supabase = getSupabase();
 
     if (!supabase) {
-      return { 
+      return {
         ok: true,
         embedding_size: embedding.length,
         similar_signals: [],
-        similarity_scores: []
+        similarity_scores: [],
       };
     }
 
-    const { data: signals, error } = await supabase
-      .from('signals')
-      .select('id, type, content, embedding')
-      .order('created_at', { ascending: false })
-      .limit(100);
+    const { data } = await supabase
+      .from("signals")
+      .select("id,type,content,embedding")
+      .limit(25);
 
-    if (error) {
-      console.error('Analyze failed:', error);
-      return { 
-        ok: false,
-        embedding_size: embedding.length,
-        similar_signals: [],
-        similarity_scores: []
-      };
-    }
+    const rows = Array.isArray(data) ? (data as SignalRow[]) : [];
 
-    const similarities = signals.map(signal => ({
-      id: signal.id,
-      type: signal.type,
-      content: signal.content,
-      similarity: cosineSimilarity(embedding, signal.embedding)
-    })).filter(s => s.similarity > 0.2);
+    const scored = rows
+      .map((row) => {
+        const sim = Array.isArray(row.embedding)
+          ? cosineSimilarity(embedding, row.embedding)
+          : 0;
+
+        return {
+          id: row.id ?? null,
+          type: row.type,
+          content: row.content,
+          similarity: sim,
+        };
+      })
+      .sort((a, b) => b.similarity - a.similarity)
+      .slice(0, 5);
 
     return {
       ok: true,
       embedding_size: embedding.length,
-      similar_signals: similarities,
-      similarity_scores: similarities.map(s => s.similarity)
+      similar_signals: scored,
+      similarity_scores: scored.map((x) => x.similarity),
     };
-  } catch (error) {
-    console.error('Analyze failed:', error);
-    return { 
+  } catch {
+    return {
       ok: false,
       embedding_size: 0,
       similar_signals: [],
-      similarity_scores: []
+      similarity_scores: [],
     };
   }
 }
 
 export async function discoverFromSignal(signalId: string) {
-  if (!signalId) {
-    return { ok: false, clusters: [] };
-  }
-
   try {
     const supabase = getSupabase();
-    
-    if (!supabase) {
+
+    if (!supabase || !signalId) {
       return { ok: true, clusters: [] };
     }
 
-    const { data: signals, error } = await supabase
-      .from('signals')
-      .select('id, type, content, embedding')
-      .order('created_at', { ascending: false })
-      .limit(100);
+    const { data: target } = await supabase
+      .from("signals")
+      .select("id,type,content,embedding")
+      .eq("id", signalId)
+      .single();
 
-    if (error) {
-      console.error('Discover failed:', error);
-      return { ok: false, clusters: [] };
-    }
-
-    const targetSignal = signals.find(s => s.id === signalId);
-    if (!targetSignal) {
+    if (!target || !Array.isArray(target.embedding)) {
       return { ok: true, clusters: [] };
     }
 
-    const similarities = signals.map(signal => ({
-      id: signal.id,
-      type: signal.type,
-      content: signal.content,
-      similarity: cosineSimilarity(targetSignal.embedding, signal.embedding)
-    })).filter(s => s.similarity > 0.5);
+    const { data } = await supabase
+      .from("signals")
+      .select("id,type,content,embedding")
+      .limit(25);
+
+    const rows = Array.isArray(data) ? (data as SignalRow[]) : [];
+
+    const related = rows
+      .filter((row) => row.id !== target.id && Array.isArray(row.embedding))
+      .map((row) => ({
+        id: row.id ?? null,
+        type: row.type,
+        content: row.content,
+        similarity: cosineSimilarity(target.embedding, row.embedding as number[]),
+      }))
+      .filter((row) => row.similarity >= 0.6)
+      .sort((a, b) => b.similarity - a.similarity);
 
     return {
       ok: true,
-      clusters: [{
-        center_signal: targetSignal,
-        related_signals: similarities
-      }]
+      clusters: [
+        {
+          center_signal: {
+            id: target.id ?? null,
+            type: target.type,
+            content: target.content,
+          },
+          related_signals: related,
+        },
+      ],
     };
-  } catch (error) {
-    console.error('Discover failed:', error);
+  } catch {
     return { ok: false, clusters: [] };
+  }
+}
+
+export async function runExperiment(experimentType: string, payload: unknown) {
+  try {
+    const normalizedType =
+      typeof experimentType === "string" && experimentType.trim()
+        ? experimentType.trim()
+        : "custom";
+
+    const content =
+      typeof payload === "string"
+        ? payload
+        : typeof payload === "object" &&
+          payload !== null &&
+          "content" in payload &&
+          typeof (payload as { content?: unknown }).content === "string"
+        ? ((payload as { content?: string }).content ?? "")
+        : JSON.stringify(payload ?? "");
+
+    const ingested = await ingestSignal(content, normalizedType);
+    const analyzed = await analyzeSignal(content);
+
+    return {
+      ok: true,
+      experiment_type: normalizedType,
+      result: {
+        ingested,
+        analyzed,
+      },
+    };
+  } catch {
+    return {
+      ok: false,
+      experiment_type: experimentType,
+      result: null,
+    };
   }
 }
