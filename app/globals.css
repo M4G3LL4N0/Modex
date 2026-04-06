@@ -357,6 +357,52 @@ body::before {
   border-color: rgba(255,255,255,0.15);
 }
 
+.button-secondary.active {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.experiment-domain {
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.03);
+  transition: var(--transition);
+}
+
+.experiment-domain:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.domain-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.domain-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.system-overview {
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.03);
+}
+
+.overview-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.overview-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
 /* ===== SYSTEM PANELS ===== */
 
 .system-panel {

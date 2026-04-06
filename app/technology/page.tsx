@@ -29,9 +29,35 @@ export default function TechnologyPage() {
 
           <h1 className="section-title">The Modex Engine</h1>
           <p className="section-copy">
-            Modex is designed as a machine intelligence layer that transforms scenario input
-            into predictions, recommendations, and eventually feedback-driven learning.
+            Modex is an experimental machine learning platform for discovering hidden structure
+            in complex systems across domains.
           </p>
+
+          <div className="glass-card panel-lg" style={{ marginTop: 32 }}>
+            <div className="grid-2">
+              <div>
+                <h2 className="card-title">Core Architecture</h2>
+                <p className="card-copy">
+                  Modex combines signal ingestion, deterministic embedding, similarity comparison,
+                  pattern clustering, and hypothesis generation into a unified experimental platform.
+                </p>
+              </div>
+              <div className="system-stats">
+                <div className="metric">
+                  <div className="metric-label">Signals</div>
+                  <div className="metric-value">1,024+</div>
+                </div>
+                <div className="metric">
+                  <div className="metric-label">Clusters</div>
+                  <div className="metric-value">256+</div>
+                </div>
+                <div className="metric">
+                  <div className="metric-label">Hypotheses</div>
+                  <div className="metric-value">128+</div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className="card-grid-2" style={{ marginTop: 28 }}>
             <div className="glass-card panel-lg">

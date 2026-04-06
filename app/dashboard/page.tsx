@@ -226,10 +226,44 @@ export default function DashboardPage() {
             )}
           </div>
 
-          <h1 className="section-title">Run a scenario</h1>
+          <h1 className="section-title">Experiment Console</h1>
           <p className="section-copy">
-            Describe a decision. Modex will evaluate it with score, confidence, and guidance.
+            Run experiments across animal communication, fluid dynamics, material interactions,
+            and unknown signal spaces.
           </p>
+
+          <div className="feedback-buttons" style={{ marginTop: 16 }}>
+            <button
+              className={`button-secondary ${experimentType === 'animal_signal' ? 'active' : ''}`}
+              onClick={() => setExperimentType('animal_signal')}
+            >
+              Animal Signals
+            </button>
+            <button
+              className={`button-secondary ${experimentType === 'fluid_pattern' ? 'active' : ''}`}
+              onClick={() => setExperimentType('fluid_pattern')}
+            >
+              Fluid Patterns
+            </button>
+            <button
+              className={`button-secondary ${experimentType === 'material_interaction' ? 'active' : ''}`}
+              onClick={() => setExperimentType('material_interaction')}
+            >
+              Materials
+            </button>
+            <button
+              className={`button-secondary ${experimentType === 'generic_sequence' ? 'active' : ''}`}
+              onClick={() => setExperimentType('generic_sequence')}
+            >
+              Sequences
+            </button>
+            <button
+              className={`button-secondary ${experimentType === 'custom' ? 'active' : ''}`}
+              onClick={() => setExperimentType('custom')}
+            >
+              Custom
+            </button>
+          </div>
 
           {/* INPUT */}
           <div className="glass-card panel-lg" style={{ marginTop: 30 }}>
