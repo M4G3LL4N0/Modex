@@ -791,3 +791,7 @@ body::before {
 .animate-fade-in {
   animation: fade-in 0.5s ease-out;
 }
+
+.animation-delay-100 {
+  animation-delay: 100ms;
+}
