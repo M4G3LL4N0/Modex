@@ -31,7 +31,7 @@ export default function Page() {
           <div className="hero-content">
             <div className="brand-mark">MX</div>
             <h1 className="hero-title">
-              Experimental Intelligence<br />
+              <span className="gradient-text">Experimental Intelligence</span><br />
               for Complex Systems
             </h1>
             <p className="hero-copy">
@@ -54,15 +54,65 @@ export default function Page() {
             </div>
           </div>
         </div>
+        <div className="hero-preview">
+          <div className="system-panel">
+            <div className="grid-2">
+              <div>
+                <h3 className="panel-title">Signal Analysis</h3>
+                <p className="panel-copy">
+                  Ingest, embed, and compare signals across domains.
+                </p>
+              </div>
+              <div className="system-stats">
+                <div className="metric">
+                  <div className="metric-label">Signals</div>
+                  <div className="metric-value">1,024+</div>
+                </div>
+                <div className="metric">
+                  <div className="metric-label">Clusters</div>
+                  <div className="metric-value">256+</div>
+                </div>
+                <div className="metric">
+                  <div className="metric-label">Hypotheses</div>
+                  <div className="metric-value">128+</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="section">
         <div className="container">
-          <h2 className="section-title">What Modex Is</h2>
-          <p className="section-copy">
-            Modex ingests signals from complex systems, embeds them into comparable representations,
-            detects patterns through clustering, and generates testable hypotheses about underlying structure.
-          </p>
+          <div className="glass-card panel-xl">
+            <h2 className="section-title">The Modex Engine</h2>
+            <p className="section-copy">
+              Modex ingests signals from complex systems, embeds them into comparable representations,
+              detects patterns through clustering, and generates testable hypotheses about underlying structure.
+            </p>
+            <div className="system-stats" style={{ marginTop: 32 }}>
+              <div className="metric">
+                <div className="metric-label">Ingest</div>
+                <div className="metric-value">Signals</div>
+              </div>
+              <div className="metric">
+                <div className="metric-label">Embed</div>
+                <div className="metric-value">Representations</div>
+              </div>
+              <div className="metric">
+                <div className="metric-label">Compare</div>
+                <div className="metric-value">Relationships</div>
+              </div>
+              <div className="metric">
+                <div className="metric-label">Cluster</div>
+                <div className="metric-value">Patterns</div>
+              </div>
+              <div className="metric">
+                <div className="metric-label">Hypothesize</div>
+                <div className="metric-value">Structure</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -70,29 +120,49 @@ export default function Page() {
         <div className="container">
           <h2 className="section-title">Experiment Domains</h2>
           <div className="grid-2">
-            <div className="glass-card panel-lg">
+            <div className="system-panel">
+              <div className="eyebrow">Research Domain</div>
               <h3 className="card-title">Animal Communication</h3>
               <p className="card-copy">
                 Analyze and compare vocalizations, gestures, and behavioral patterns across species.
               </p>
+              <div className="metric" style={{ marginTop: 24 }}>
+                <div className="metric-label">Signals</div>
+                <div className="metric-value">256+</div>
+              </div>
             </div>
-            <div className="glass-card panel-lg">
+            <div className="system-panel">
+              <div className="eyebrow">Research Domain</div>
               <h3 className="card-title">Fluid Dynamics</h3>
               <p className="card-copy">
                 Model and predict water flow, turbulence, and complex fluid interactions.
               </p>
+              <div className="metric" style={{ marginTop: 24 }}>
+                <div className="metric-label">Patterns</div>
+                <div className="metric-value">128+</div>
+              </div>
             </div>
-            <div className="glass-card panel-lg">
+            <div className="system-panel">
+              <div className="eyebrow">Research Domain</div>
               <h3 className="card-title">Material Interactions</h3>
               <p className="card-copy">
                 Study how materials behave under stress, heat, and environmental conditions.
               </p>
+              <div className="metric" style={{ marginTop: 24 }}>
+                <div className="metric-label">Clusters</div>
+                <div className="metric-value">64+</div>
+              </div>
             </div>
-            <div className="glass-card panel-lg">
+            <div className="system-panel">
+              <div className="eyebrow">Research Domain</div>
               <h3 className="card-title">Unknown Signals</h3>
               <p className="card-copy">
                 Discover patterns in unstructured, novel, or poorly understood signal spaces.
               </p>
+              <div className="metric" style={{ marginTop: 24 }}>
+                <div className="metric-label">Hypotheses</div>
+                <div className="metric-value">32+</div>
+              </div>
             </div>
           </div>
         </div>
