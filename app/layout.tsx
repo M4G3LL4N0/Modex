@@ -15,10 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-gray-50">
         <MouseTracker />
         <Header />
-        <main className="page-shell">
+        <main className="pt-20 min-h-screen">
           {children}
         </main>
         <Footer />

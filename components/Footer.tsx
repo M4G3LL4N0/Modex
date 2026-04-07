@@ -1,15 +1,8 @@
-import Link from "next/link";
-
 export default function Footer() {
   return (
-    <footer className="site-footer">
-      <div className="container footer-row">
-        <div>Modex — A Noaerth Ecosystem Venture</div>
-        <nav className="nav-links">
-          <a className="nav-link" href="/">Home</a>
-          <a className="nav-link" href="/technology">Technology</a>
-          <a className="nav-link" href="/investors">Investors</a>
-        </nav>
+    <footer className="border-t border-gray-100 mt-20">
+      <div className="container mx-auto px-4 py-6 text-center text-sm text-gray-500">
+        &copy; {new Date().getFullYear()} MODEX — A Noaerth Ecosystem Venture
       </div>
     </footer>
   );

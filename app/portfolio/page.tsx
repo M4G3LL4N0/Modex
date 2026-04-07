@@ -1,25 +1,23 @@
 export default function PortfolioPage() {
   return (
-    <main className="page-shell">
-      <section className="section" style={{ paddingTop: 72 }}>
-        <div className="container">
-          <div className="slab">
-            <div className="section-label">
-              <span className="section-label-dot" />
-              Portfolio
-            </div>
-
-            <h1 className="section-title">
-              Modex Experimental Projects
-            </h1>
-
-            <p className="section-copy">
-              Explore our active research initiatives across animal communication,
-              fluid dynamics, material interactions, and unknown signal spaces.
-            </p>
+    <section className="py-20">
+      <div className="container mx-auto px-4 max-w-3xl">
+        <div className="space-y-6">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-gray-400 rounded-full" />
+            <span className="text-sm font-medium text-gray-500">Portfolio</span>
           </div>
+          
+          <h1 className="text-4xl font-bold text-gray-900">
+            Modex Experimental Projects
+          </h1>
+          
+          <p className="text-lg text-gray-600">
+            Explore our active research initiatives across animal communication,
+            fluid dynamics, material interactions, and unknown signal spaces.
+          </p>
         </div>
-      </section>
-    </main>
+      </div>
+    </section>
   );
 }
