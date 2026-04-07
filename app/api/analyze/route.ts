@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { analyzeSignal } from '@/lib/modex-core';
 
+export const runtime = 'edge';
+
 export async function POST(req: Request) {
   try {
     const { content } = await req.json();

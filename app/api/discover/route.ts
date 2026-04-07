@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { discoverFromSignal } from '@/lib/modex-core';
 
+export const runtime = 'edge';
+
 export async function POST(req: Request) {
   try {
     const { signalId } = await req.json();

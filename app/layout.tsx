@@ -1,5 +1,7 @@
 import "./globals.css";
 import MouseTracker from "./mouse-tracker";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Modex",
@@ -15,7 +17,11 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <MouseTracker />
-        {children}
+        <Header />
+        <main className="page-shell">
+          {children}
+        </main>
+        <Footer />
       </body>
     </html>
   );
