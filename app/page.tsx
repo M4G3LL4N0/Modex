@@ -26,15 +26,17 @@ export default function Page() {
   return (
     <main className="page-shell">
       <section className="hero-section">
+        <div className="hero-backdrop" />
         <div className="container">
           <div className="hero-content">
+            <div className="brand-mark">MX</div>
             <h1 className="hero-title">
-              Discovering Structure<br />
-              in Complex Systems
+              Experimental Intelligence<br />
+              for Complex Systems
             </h1>
             <p className="hero-copy">
-              Modex is a machine learning platform for experimental discovery across
-              animal communication, fluid dynamics, material interactions, and unknown signal spaces.
+              Modex is a machine learning research platform that discovers<br />
+              hidden patterns in signals, behaviors, and interactions.
             </p>
             <div className="hero-actions">
               <button 
