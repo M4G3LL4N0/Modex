@@ -60,16 +60,23 @@
 }
 
 .glass-panel {
-  background: rgba(255,255,255,0.03);
+  background: linear-gradient(135deg, rgba(20,30,60,0.4), rgba(10,15,40,0.6));
   border: 1px solid var(--border);
-  backdrop-filter: blur(40px);
-  border-radius: var(--radius-xl);
+  backdrop-filter: blur(60px);
+  border-radius: var(--radius-lg);
   transition: var(--transition);
+  box-shadow: 
+    0 10px 30px rgba(0,0,0,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.06);
 }
 
 .glass-panel:hover {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.15);
+  background: linear-gradient(135deg, rgba(30,50,90,0.4), rgba(15,25,60,0.6));
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 12px 40px rgba(0,10,60,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 /* New atmospheric effects */
