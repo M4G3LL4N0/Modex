@@ -18,7 +18,7 @@ export default function RootLayout({
       <body className="bg-gray-50">
         <MouseTracker />
         <Header />
-        <main className="pt-20 min-h-screen">
+        <main className="pt-20 min-h-screen animate-fade-in">
           {children}
         </main>
         <Footer />

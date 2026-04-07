@@ -5,7 +5,7 @@ export default function Header() {
     <header className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100 z-50">
       <div className="container mx-auto px-4 h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 flex items-center justify-center bg-gray-900 text-white font-medium rounded-lg">
+          <div className="w-8 h-8 flex items-center justify-center bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors">
             MX
           </div>
           <div>
