@@ -8,6 +8,10 @@ type Node = {
   label: string;
   type: "current" | "similar";
   similarity?: number;
+  x?: number;
+  y?: number;
+  fx?: number;
+  fy?: number;
 };
 
 type Link = {
