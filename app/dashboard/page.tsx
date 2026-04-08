@@ -1,164 +1,207 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { NextResponse } from "next/server";
-import "./dashboard.css";
+import { useEffect, useMemo, useState } from "react";
 
-type PredictionResult = {
-  score: number;
-  confidence: number;
-  risk_level: "low" | "moderate" | "high";
-  recommendation: string;
+type ExperimentType =
+  | "animal_signal"
+  | "fluid_pattern"
+  | "material_interaction"
+  | "generic_sequence"
+  | "custom";
+
+type ExperimentResult = {
+  ok?: boolean;
+  experiment_type?: string;
+  result?: {
+    ingested?: {
+      ok?: boolean;
+      id?: string | null;
+      type?: string;
+      content?: string;
+      embedding_length?: number;
+    };
+    analyzed?: {
+      ok?: boolean;
+      embedding_size?: number;
+      similar_signals?: Array<{
+        id?: string | null;
+        type?: string;
+        content?: string;
+        similarity?: number;
+      }>;
+      similarity_scores?: number[];
+    };
+    discovered?: {
+      ok?: boolean;
+      clusters?: Array<{
+        center_signal?: {
+          id?: string | null;
+          type?: string;
+          content?: string;
+        } | null;
+        related_signals?: Array<{
+          id?: string | null;
+          type?: string;
+          content?: string;
+          similarity?: number;
+        }>;
+        average_similarity?: number;
+        hypothesis?: string;
+      }>;
+    };
+  } | null;
+};
+
+type LogItem = {
+  id: string;
+  experimentType: ExperimentType;
+  input: string;
+  createdAt: string;
+};
+
+const EXPERIMENT_LABELS: Record<ExperimentType, string> = {
+  animal_signal: "Animal Signals",
+  fluid_pattern: "Fluid Patterns",
+  material_interaction: "Material Interactions",
+  generic_sequence: "Generic Sequences",
+  custom: "Custom",
+};
+
+const EXPERIMENT_HELP: Record<ExperimentType, string> = {
+  animal_signal:
+    "Describe an animal sound pattern, signal sequence, or communication behavior.",
+  fluid_pattern:
+    "Describe a fluid or water behavior pattern, flow event, or interaction.",
+  material_interaction:
+    "Describe a material interaction, contact pattern, or physical response.",
+  generic_sequence:
+    "Describe a sequence, repeated event stream, or structured pattern.",
+  custom:
+    "Describe any unknown system, signal, or interaction you want Modex to analyze.",
 };
 
 export default function DashboardPage() {
-  // Add some basic styles inline since we don't have access to the CSS file
-  const styles = {
-    historyList: {
-      marginTop: '16px',
-    },
-    historyItem: {
-      padding: '12px 0',
-      borderBottom: '1px solid rgba(255,255,255,0.1)',
-      '&:last-child': {
-        borderBottom: 'none',
-      },
-    },
-    historyContent: {
-      fontSize: '14px',
-      opacity: 0.8,
-      marginBottom: '8px',
-    },
-    historyStats: {
-      display: 'flex',
-      gap: '12px',
-      fontSize: '12px',
-    },
-    historyScore: {
-      opacity: 0.6,
-    },
-    historyOutcome: {
-      fontWeight: '500',
-      '&.success': {
-        color: '#4ade80',
-      },
-      '&.failure': {
-        color: '#f87171',
-      },
-    },
-    emptyState: {
-      opacity: 0.6,
-      fontSize: '14px',
-      textAlign: 'center',
-      padding: '16px 0',
-    },
-    accuracyStats: {
-      marginTop: '16px',
-      textAlign: 'center',
-    },
-    accuracyPercent: {
-      fontSize: '24px',
-      fontWeight: '500',
-    },
-    accuracyCount: {
-      fontSize: '14px',
-      opacity: 0.6,
-      marginTop: '4px',
-    },
-  };
-  const [input, setInput] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      return params.get('input') || '';
-    }
-    return '';
-  });
-  const [result, setResult] = useState<PredictionResult | null>(null);
+  const [experimentType, setExperimentType] =
+    useState<ExperimentType>("animal_signal");
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState<ExperimentResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [usage, setUsage] = useState(0);
-  const [isPro, setIsPro] = useState(false);
-  const [history, setHistory] = useState<any[]>([]);
-  const [accuracy, setAccuracy] = useState<number | null>(null);
-  const [dailyDecision, setDailyDecision] = useState<string>('');
-  const [isEditingDecision, setIsEditingDecision] = useState(false);
+  const [copyState, setCopyState] = useState<"idle" | "copied">("idle");
+  const [log, setLog] = useState<LogItem[]>([]);
 
-  const LIMIT = 5;
-
-  // Load daily decision from localStorage
   useEffect(() => {
-    const today = new Date().toDateString();
-    const stored = localStorage.getItem('dailyDecision');
+    const params = new URLSearchParams(window.location.search);
+    const initialInput = params.get("input");
+    if (initialInput) {
+      setInput(initialInput);
+    }
+
+    const stored = window.localStorage.getItem("modex_experiment_log");
     if (stored) {
-      const { date, decision } = JSON.parse(stored);
-      if (date === today) {
-        setDailyDecision(decision);
-      }
+      try {
+        const parsed = JSON.parse(stored) as LogItem[];
+        if (Array.isArray(parsed)) {
+          setLog(parsed);
+        }
+      } catch {}
     }
   }, []);
-
-  // Save daily decision to localStorage
-  const saveDailyDecision = (decision: string) => {
-    const today = new Date().toDateString();
-    localStorage.setItem('dailyDecision', JSON.stringify({ date: today, decision }));
-    setDailyDecision(decision);
-    setIsEditingDecision(false);
-  };
 
   useEffect(() => {
-    // Fetch history and accuracy
-    async function fetchData() {
-      try {
-        const [historyRes, accuracyRes] = await Promise.all([
-          fetch('/api/history'),
-          fetch('/api/accuracy')
-        ]);
-        
-        const historyData = await historyRes.json();
-        const accuracyData = await accuracyRes.json();
-        
-        setHistory(historyData.items || []);
-        setAccuracy(accuracyData.accuracy || null);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      }
-    }
+    window.localStorage.setItem("modex_experiment_log", JSON.stringify(log));
+  }, [log]);
 
-    fetchData();
-  }, []);
-
-  async function runPrediction() {
-    if (!isPro && usage >= LIMIT) return;
-
+  async function runExperiment() {
     setIsLoading(true);
     setError(null);
+    setCopyState("idle");
 
     try {
-      const res = await fetch("/api/predict", {
+      const res = await fetch("/api/experiments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ content: input }),
+        body: JSON.stringify({
+          experimentType,
+          payload: {
+            content: input,
+          },
+        }),
       });
 
-      const data = await res.json();
+      const data = (await res.json()) as ExperimentResult | { error?: string };
 
       if (!res.ok) {
-        setError(data?.error || "Prediction failed");
+        setError(
+          typeof (data as { error?: string }).error === "string"
+            ? (data as { error?: string }).error!
+            : "Experiment failed"
+        );
         setResult(null);
         return;
       }
 
-      setResult(data.prediction ?? null);
-      setUsage((u) => u + 1);
+      setResult(data as ExperimentResult);
+
+      setLog((prev) => [
+        {
+          id: `${Date.now()}`,
+          experimentType,
+          input,
+          createdAt: new Date().toISOString(),
+        },
+        ...prev,
+      ].slice(0, 12));
     } catch {
-      setError("Something went wrong");
+      setError("Something went wrong while running the experiment.");
       setResult(null);
     } finally {
       setIsLoading(false);
     }
   }
+
+  async function shareResult() {
+    if (!result?.result?.analyzed) return;
+
+    const analyzed = result.result.analyzed;
+    const topSimilarity =
+      analyzed.similarity_scores && analyzed.similarity_scores.length > 0
+        ? Math.max(...analyzed.similarity_scores)
+        : 0;
+
+    const clusterCount = result.result.discovered?.clusters?.length ?? 0;
+
+    const shareText = [
+      `Modex experiment: ${EXPERIMENT_LABELS[experimentType]}`,
+      `Embedding size: ${analyzed.embedding_size ?? 0}`,
+      `Similar signals: ${analyzed.similar_signals?.length ?? 0}`,
+      `Top similarity: ${Math.round(topSimilarity * 100)}%`,
+      `Clusters detected: ${clusterCount}`,
+      `Try it: ${window.location.origin}/dashboard`,
+    ].join("\n");
+
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopyState("copied");
+      window.setTimeout(() => setCopyState("idle"), 2000);
+    } catch {
+      setCopyState("idle");
+    }
+  }
+
+  const strongestSimilarity = useMemo(() => {
+    const scores = result?.result?.analyzed?.similarity_scores ?? [];
+    if (!scores.length) return 0;
+    return Math.max(...scores);
+  }, [result]);
+
+  const topHypothesis = useMemo(() => {
+    const clusters = result?.result?.discovered?.clusters ?? [];
+    if (!clusters.length) return "No pattern hypothesis yet.";
+    return clusters[0]?.hypothesis ?? "No pattern hypothesis yet.";
+  }, [result]);
 
   return (
     <main className="page-shell">
@@ -168,349 +211,221 @@ export default function DashboardPage() {
             <div className="brand-mark">MX</div>
             <div>
               <div className="brand-name">MODEX</div>
-              <div className="brand-subtitle">Decision Intelligence</div>
+              <div className="brand-subtitle">Experiment Console</div>
             </div>
           </div>
 
           <nav className="nav-links">
-            <a href="/" className="nav-link">Home</a>
-            <a href="/technology" className="nav-link">Technology</a>
-            <a href="/investors" className="nav-link">Investors</a>
+            <a className="nav-link" href="/">
+              Home
+            </a>
+            <a className="nav-link" href="/technology">
+              Technology
+            </a>
+            <a className="nav-link" href="/investors">
+              Investors
+            </a>
+            <a className="nav-link" href="/dashboard">
+              Dashboard
+            </a>
           </nav>
         </div>
       </header>
 
-      <section className="section" style={{ paddingTop: 80 }}>
+      <section className="section" style={{ paddingTop: 72 }}>
         <div className="container">
-
-          {/* Daily Decision Prompt */}
-          <div className="glass-card panel-lg" style={{ marginBottom: 30 }}>
-            <h2 className="card-title">Today's Decision</h2>
-            {isEditingDecision || !dailyDecision ? (
-              <div style={{ marginTop: 16 }}>
-                <textarea
-                  className="textarea-box"
-                  placeholder="What&apos;s the most important decision you need to make today?"
-                  value={dailyDecision}
-                  onChange={(e) => setDailyDecision(e.target.value)}
-                  style={{ minHeight: 80 }}
-                />
-                <button
-                  className="button-primary"
-                  onClick={() => saveDailyDecision(dailyDecision)}
-                  style={{ marginTop: 12 }}
-                >
-                  Save Decision
-                </button>
-              </div>
-            ) : (
-              <div style={{ marginTop: 16 }}>
-                <div style={{ 
-                  fontSize: 16,
-                  lineHeight: 1.5,
-                  whiteSpace: 'pre-wrap',
-                  padding: '12px 16px',
-                  borderRadius: 8,
-                  backgroundColor: 'rgba(255,255,255,0.05)'
-                }}>
-                  {dailyDecision}
-                </div>
-                <button
-                  className="button-secondary"
-                  onClick={() => setIsEditingDecision(true)}
-                  style={{ marginTop: 12 }}
-                >
-                  Edit Decision
-                </button>
-              </div>
-            )}
+          <div className="section-label">
+            <span className="section-label-dot" />
+            Experiment Console
           </div>
 
-          <h1 className="section-title">Experiment Console</h1>
+          <h1 className="section-title">
+            Run machine-learning experiments on real-world signals.
+          </h1>
+
           <p className="section-copy">
-            Run experiments across animal communication, fluid dynamics, material interactions,
-            and unknown signal spaces.
+            Use Modex to ingest signals, compare patterns, detect clusters, and
+            generate early hypotheses across animal, fluid, material, and
+            unknown systems.
           </p>
 
-          <div className="feedback-buttons" style={{ marginTop: 16 }}>
-            <button
-              className={`button-secondary ${experimentType === 'animal_signal' ? 'active' : ''}`}
-              onClick={() => setExperimentType('animal_signal')}
-            >
-              Animal Signals
-            </button>
-            <button
-              className={`button-secondary ${experimentType === 'fluid_pattern' ? 'active' : ''}`}
-              onClick={() => setExperimentType('fluid_pattern')}
-            >
-              Fluid Patterns
-            </button>
-            <button
-              className={`button-secondary ${experimentType === 'material_interaction' ? 'active' : ''}`}
-              onClick={() => setExperimentType('material_interaction')}
-            >
-              Materials
-            </button>
-            <button
-              className={`button-secondary ${experimentType === 'generic_sequence' ? 'active' : ''}`}
-              onClick={() => setExperimentType('generic_sequence')}
-            >
-              Sequences
-            </button>
-            <button
-              className={`button-secondary ${experimentType === 'custom' ? 'active' : ''}`}
-              onClick={() => setExperimentType('custom')}
-            >
-              Custom
-            </button>
-          </div>
+          <div className="split-layout" style={{ marginTop: 30 }}>
+            <div className="glass-card panel-lg">
+              <div className="eyebrow">Experiment Type</div>
 
-          {/* INPUT */}
-          <div className="glass-card panel-lg" style={{ marginTop: 30 }}>
-            <textarea
-              className="textarea-box"
-              placeholder="Describe your situation..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-            />
-
-            <div style={{ marginTop: 16, display: "flex", gap: 12 }}>
-              <button
-                onClick={runPrediction}
-                disabled={!input || isLoading || usage >= LIMIT}
-                className="button-primary"
-                style={{ opacity: usage >= LIMIT ? 0.5 : 1 }}
-              >
-                {usage >= LIMIT
-                  ? "Limit reached"
-                  : isLoading
-                  ? "Analyzing..."
-                  : "Analyze"}
-              </button>
-            </div>
-
-            <div style={{ marginTop: 10, fontSize: 12, opacity: 0.6 }}>
-              {isPro ? 'Pro user' : `${usage}/${LIMIT} free runs used`}
-            </div>
-
-            {usage >= LIMIT && (
-              <div
-                className="glass-card panel"
-                style={{
-                  marginTop: 16,
-                  borderColor: "rgba(255,255,255,0.2)",
-                  padding: '20px',
-                  textAlign: 'center'
-                }}
-              >
-                <div style={{ 
-                  fontSize: '18px',
-                  marginBottom: '12px',
-                  fontWeight: '500'
-                }}>
-                  You've used your free decisions
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  opacity: 0.8,
-                  marginBottom: '20px'
-                }}>
-                  Upgrade to keep improving your judgment
-                </div>
-                <button 
-                  className="button-primary"
-                  onClick={() => setIsPro(true)}
-                  style={{ 
-                    width: '100%',
-                    padding: '12px',
-                    fontSize: '16px',
-                    fontWeight: '500'
-                  }}
+              <div className="feedback-buttons" style={{ marginTop: 16 }}>
+                <button
+                  className={`button-secondary ${experimentType === "animal_signal" ? "active" : ""}`}
+                  onClick={() => setExperimentType("animal_signal")}
+                  type="button"
                 >
-                  Upgrade to Pro
+                  Animal Signals
+                </button>
+                <button
+                  className={`button-secondary ${experimentType === "fluid_pattern" ? "active" : ""}`}
+                  onClick={() => setExperimentType("fluid_pattern")}
+                  type="button"
+                >
+                  Fluid Patterns
+                </button>
+                <button
+                  className={`button-secondary ${experimentType === "material_interaction" ? "active" : ""}`}
+                  onClick={() => setExperimentType("material_interaction")}
+                  type="button"
+                >
+                  Material Interactions
+                </button>
+                <button
+                  className={`button-secondary ${experimentType === "generic_sequence" ? "active" : ""}`}
+                  onClick={() => setExperimentType("generic_sequence")}
+                  type="button"
+                >
+                  Generic Sequence
+                </button>
+                <button
+                  className={`button-secondary ${experimentType === "custom" ? "active" : ""}`}
+                  onClick={() => setExperimentType("custom")}
+                  type="button"
+                >
+                  Custom
                 </button>
               </div>
-            )}
-          </div>
 
-          {/* DECISION LOG */}
-          <div className="glass-card panel-lg" style={{ marginTop: 30 }}>
-            <h2 className="card-title">Your Decision Log</h2>
-            
-            {history.length > 0 ? (
-              <div className="history-list">
-                {history.map((item) => (
-                  <div key={item.id} className="history-item">
-                    <div className="history-content">
-                      {item.input?.content || 'No content'}
-                    </div>
-                    <div className="history-stats">
-                      <div className="history-score">
-                        Score: {Math.round((item.prediction?.score || 0) * 100)}%
-                      </div>
-                      {item.outcome !== undefined && (
-                        <div className={`history-outcome ${item.outcome ? 'success' : 'failure'}`}>
-                          {item.outcome ? '✅ Correct' : '❌ Incorrect'}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
+              <div className="eyebrow" style={{ marginTop: 22 }}>
+                Signal Input
               </div>
-            ) : (
-              <div className="empty-state">No decisions logged yet</div>
-            )}
-          </div>
 
-          {/* ACCURACY */}
-          <div className="glass-card panel-lg" style={{ marginTop: 30 }}>
-            <h2 className="card-title">Track Your Accuracy</h2>
-            <div className="accuracy-stats">
-              {accuracy !== null ? (
-                <>
-                  <div className="accuracy-percent">
-                    {Math.round(accuracy * 100)}% correct
+              <p className="card-copy" style={{ marginTop: 8 }}>
+                {EXPERIMENT_HELP[experimentType]}
+              </p>
+
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder={EXPERIMENT_HELP[experimentType]}
+                className="textarea-box"
+                style={{ marginTop: 16 }}
+              />
+
+              <div className="button-row" style={{ marginTop: 16 }}>
+                <button
+                  onClick={runExperiment}
+                  disabled={isLoading || !input.trim()}
+                  className="button-primary"
+                  style={{
+                    opacity: isLoading || !input.trim() ? 0.55 : 1,
+                    cursor: isLoading || !input.trim() ? "not-allowed" : "pointer",
+                  }}
+                  type="button"
+                >
+                  {isLoading ? "Running Experiment..." : "Run Experiment"}
+                </button>
+
+                <button
+                  onClick={shareResult}
+                  className="button-secondary"
+                  type="button"
+                  disabled={!result}
+                  style={{
+                    opacity: result ? 1 : 0.55,
+                    cursor: result ? "pointer" : "not-allowed",
+                  }}
+                >
+                  {copyState === "copied" ? "Copied" : "Share Result"}
+                </button>
+              </div>
+
+              {error ? (
+                <div
+                  className="glass-card panel"
+                  style={{
+                    marginTop: 18,
+                    borderColor: "rgba(255, 120, 120, 0.22)",
+                    background: "rgba(255, 80, 80, 0.08)",
+                    color: "#ffd4d4",
+                  }}
+                >
+                  {error}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="stack">
+              <div className="glass-card panel-lg">
+                <div className="eyebrow">Discovery Summary</div>
+
+                {result?.result ? (
+                  <>
+                    <div className="card-grid-3" style={{ marginTop: 18 }}>
+                      <div className="glass-card panel">
+                        <div className="eyebrow">Embedding</div>
+                        <div className="card-title" style={{ fontSize: 32 }}>
+                          {result.result.analyzed?.embedding_size ?? 0}
+                        </div>
+                      </div>
+
+                      <div className="glass-card panel">
+                        <div className="eyebrow">Similar Signals</div>
+                        <div className="card-title" style={{ fontSize: 32 }}>
+                          {result.result.analyzed?.similar_signals?.length ?? 0}
+                        </div>
+                      </div>
+
+                      <div className="glass-card panel">
+                        <div className="eyebrow">Clusters</div>
+                        <div className="card-title" style={{ fontSize: 32 }}>
+                          {result.result.discovered?.clusters?.length ?? 0}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="glass-card panel" style={{ marginTop: 18 }}>
+                      <div className="eyebrow">Strongest Similarity</div>
+                      <p className="card-copy">
+                        {Math.round(strongestSimilarity * 100)}%
+                      </p>
+                    </div>
+
+                    <div className="glass-card panel" style={{ marginTop: 18 }}>
+                      <div className="eyebrow">Top Hypothesis</div>
+                      <p className="card-copy">{topHypothesis}</p>
+                    </div>
+                  </>
+                ) : (
+                  <p className="card-copy" style={{ marginTop: 16 }}>
+                    Choose an experiment type, enter a signal description, and
+                    let Modex ingest, compare, cluster, and hypothesize.
+                  </p>
+                )}
+              </div>
+
+              <div className="glass-card panel-lg">
+                <div className="eyebrow">Your Experiment Log</div>
+
+                {log.length ? (
+                  <div style={{ marginTop: 16, display: "grid", gap: 12 }}>
+                    {log.map((item) => (
+                      <div key={item.id} className="glass-card panel">
+                        <div className="eyebrow">
+                          {EXPERIMENT_LABELS[item.experimentType]}
+                        </div>
+                        <p className="card-copy">
+                          {item.input.length > 140
+                            ? `${item.input.slice(0, 140)}...`
+                            : item.input}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                  <div className="accuracy-count">
-                    Based on {history.filter(h => h.outcome !== undefined).length} decisions
-                  </div>
-                </>
-              ) : (
-                <div className="empty-state">Not enough data to calculate accuracy</div>
-              )}
+                ) : (
+                  <p className="card-copy" style={{ marginTop: 16 }}>
+                    No experiments logged yet. Run your first experiment to
+                    start building a signal history.
+                  </p>
+                )}
+              </div>
             </div>
           </div>
-
-          {/* RESULT */}
-          <div style={{ marginTop: 30 }}>
-            {error && (
-              <div className="glass-card panel">{error}</div>
-            )}
-
-            {result && (
-              <div className="glass-card panel-lg">
-                <h2 className="card-title">Decision Analysis</h2>
-
-                {/* Headline Score */}
-                <div className="card-section" style={{ textAlign: 'center', marginBottom: '32px' }}>
-                  <div style={{
-                    fontSize: '48px',
-                    fontWeight: '800',
-                    lineHeight: 1,
-                    marginBottom: '12px'
-                  }}>
-                    {Math.round(result.score * 100)}%
-                  </div>
-                  <div style={{
-                    fontSize: '24px',
-                    fontWeight: '600',
-                    marginBottom: '12px'
-                  }}>
-                    Decision Score
-                  </div>
-                  <div style={{
-                    fontSize: '18px',
-                    opacity: 0.9,
-                    fontWeight: 500
-                  }}>
-                    {result.score > 0.75 
-                      ? 'This appears to be a strong decision 📈' 
-                      : result.score > 0.45 
-                        ? 'This decision has mixed signals 🤔'
-                        : 'This decision may not be favorable 🚩'}
-                  </div>
-                </div>
-
-                {/* Confidence Indicator */}
-                <div className="card-section" style={{ textAlign: 'center', margin: '0 auto 24px', maxWidth: '300px' }}>
-                  <div style={{ 
-                    fontSize: '14px',
-                    opacity: 0.8,
-                    marginBottom: '8px'
-                  }}>
-                    Confidence Level
-                  </div>
-                  <div style={{
-                    height: '6px',
-                    borderRadius: '3px',
-                    background: 'rgba(255,255,255,0.1)',
-                    overflow: 'hidden'
-                  }}>
-                    <div style={{
-                      width: `${Math.round(result.confidence * 100)}%`,
-                      height: '100%',
-                      background: `linear-gradient(to right, 
-                        ${result.confidence > 0.8 ? '#10b981' : 
-                          result.confidence > 0.5 ? '#f59e0b' : '#ef4444'})`
-                    }}/>
-                  </div>
-                  <div style={{ 
-                    fontSize: '13px',
-                    opacity: 0.7,
-                    marginTop: '8px',
-                    fontStyle: 'italic'
-                  }}>
-                    {result.confidence > 0.85 
-                      ? 'High confidence in this analysis'
-                      : result.confidence > 0.6 
-                        ? 'Moderate confidence - consider multiple perspectives'
-                        : 'Lower confidence - trust your intuition too'}
-                  </div>
-                </div>
-
-                {/* Risk Interpretation */}
-                <div className="card-section">
-                  <h3 className="section-title">Risk Interpretation</h3>
-                  <p className="section-copy">
-                    The {result.risk_level} risk level suggests{' '}
-                    {result.risk_level === 'high' ? 'significant potential challenges' :
-                     result.risk_level === 'moderate' ? 'manageable risks with proper planning' :
-                     'minimal expected complications'}.
-                  </p>
-                </div>
-
-                {/* Suggested Action */}
-                <div className="card-section">
-                  <h3 className="section-title">Suggested Action</h3>
-                  <p className="section-copy">
-                    {result.recommendation}
-                  </p>
-                </div>
-
-                {/* Metrics Summary */}
-                <div className="metrics-summary">
-                  <div className="metric">
-                    <div className="metric-label">Score</div>
-                    <div className="metric-value">{Math.round(result.score * 100)}%</div>
-                  </div>
-                  <div className="metric">
-                    <div className="metric-label">Confidence</div>
-                    <div className="metric-value">{Math.round(result.confidence * 100)}%</div>
-                  </div>
-                  <div className="metric">
-                    <div className="metric-label">Risk</div>
-                    <div className="metric-value">{result.risk_level}</div>
-                  </div>
-                </div>
-
-                {/* Share Button */}
-                <div style={{ marginTop: 20 }}>
-                  <button
-                    className="button-primary"
-                    onClick={() => {
-                      const shareText = `Modex scored this decision:\nScore: ${Math.round(result.score * 100)}%\nConfidence: ${Math.round(result.confidence * 100)}%\nRisk: ${result.risk_level}\n\nTry it yourself: ${window.location.origin}`;
-                      navigator.clipboard.writeText(shareText);
-                      alert('Copied to clipboard! Share this result anywhere.');
-                    }}
-                    style={{ width: '100%' }}
-                  >
-                    Share this result
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-
         </div>
       </section>
     </main>

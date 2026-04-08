@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function AboutPage() {
+export default function FounderPage() {
   return (
     <main className="page-shell">
       <header className="site-header">
@@ -18,6 +18,9 @@ export default function AboutPage() {
           <nav className="nav-links">
             <Link className="nav-link" href="/">
               Home
+            </Link>
+            <Link className="nav-link" href="/about">
+              About
             </Link>
             <Link className="nav-link" href="/technology">
               Technology
@@ -37,60 +40,61 @@ export default function AboutPage() {
           <div className="slab">
             <div className="section-label">
               <span className="section-label-dot" />
-              About Modex
+              Founder Vision
             </div>
 
             <h1 className="section-title">
-              A machine learning system for discovering hidden structure.
+              Building a machine learning system that can help reveal how the
+              world actually works.
             </h1>
 
             <p className="section-copy">
-              Modex is an experimental intelligence platform designed to ingest
-              signals, represent them computationally, compare relationships,
-              detect clusters, and generate early hypotheses across complex
-              domains.
+              Modex is being built from the belief that many real-world systems
+              contain hidden structure that is difficult for humans to detect
+              directly, but can become legible through representation, similarity,
+              clustering, and experimentation.
             </p>
 
             <div className="feature-grid" style={{ marginTop: 28 }}>
               <article className="feature-card">
-                <div className="eyebrow">Mission</div>
-                <h2 className="card-title">Learn the world through patterns.</h2>
+                <div className="eyebrow">Ambition</div>
+                <h2 className="card-title">Go beyond narrow tools.</h2>
                 <p className="card-copy">
-                  Modex is built around the idea that many systems in the world
-                  contain hidden recurring structures that can be surfaced
-                  through representation, similarity, clustering, and discovery.
+                  The goal is not another generic interface or one-off model. The
+                  goal is a broader discovery engine that can adapt across domains
+                  and help surface structure in unknown systems.
                 </p>
               </article>
 
               <article className="feature-card">
-                <div className="eyebrow">Scope</div>
-                <h2 className="card-title">Cross-domain experimental research.</h2>
+                <div className="eyebrow">Why This Matters</div>
+                <h2 className="card-title">Unknown systems are everywhere.</h2>
                 <p className="card-copy">
-                  The long-term direction includes animal communication, fluid
-                  and water dynamics, material interactions, sequence systems,
-                  and unknown signal spaces where structure is not yet well
-                  understood.
+                  Animal communication, fluid interactions, material behavior,
+                  temporal patterns, and other complex phenomena all contain
+                  signals that are only partially understood. Modex is aimed at
+                  that frontier.
                 </p>
               </article>
 
               <article className="feature-card">
                 <div className="eyebrow">Approach</div>
-                <h2 className="card-title">Ingest, embed, compare, cluster.</h2>
+                <h2 className="card-title">Experimental intelligence infrastructure.</h2>
                 <p className="card-copy">
-                  Modex treats signal discovery as a structured machine learning
-                  problem: bring in data, convert it into stable embeddings,
-                  compare it against known and emerging structures, then group
-                  and interpret patterns.
+                  Modex combines ingestion, embeddings, similarity analysis,
+                  clustering, and hypothesis generation into a single evolving
+                  system that can support experimentation rather than just static
+                  prediction.
                 </p>
               </article>
 
               <article className="feature-card">
-                <div className="eyebrow">Vision</div>
-                <h2 className="card-title">A platform for experimental intelligence.</h2>
+                <div className="eyebrow">Long-Term Direction</div>
+                <h2 className="card-title">A cross-domain discovery platform.</h2>
                 <p className="card-copy">
-                  The goal is not to build a narrow one-off model, but a broader
-                  discovery platform that can help reveal how real-world systems
-                  behave, communicate, and interact.
+                  The long-term vision is a platform that researchers, operators,
+                  and experimental teams can use to explore hidden patterns in
+                  real-world data across many categories of signal and interaction.
                 </p>
               </article>
             </div>
