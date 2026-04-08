@@ -1,6 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import dynamic from "next/dynamic";
+
+const GraphVisualization = dynamic(
+  () => import("@/components/GraphVisualization"),
+  { ssr: false }
+);
 
 type ExperimentType =
   | "animal_signal"
@@ -354,6 +360,36 @@ export default function DashboardPage() {
             <div className="stack">
               <div className="glass-card panel-lg">
                 <div className="eyebrow">Discovery Summary</div>
+                {result?.result?.analyzed?.similar_signals && (
+                  <div className="mt-6" style={{ height: "400px" }}>
+                    <GraphVisualization
+                      nodes={[
+                        {
+                          id: "current",
+                          label: "Current Signal",
+                          type: "current",
+                        },
+                        ...(result.result.analyzed.similar_signals.map(
+                          (signal, idx) => ({
+                            id: signal.id || `signal-${idx}`,
+                            label: signal.type || "Signal",
+                            type: "similar",
+                            similarity: signal.similarity || 0,
+                          })
+                        ) || []),
+                      ]}
+                      links={
+                        result.result.analyzed.similar_signals.map(
+                          (signal, idx) => ({
+                            source: "current",
+                            target: signal.id || `signal-${idx}`,
+                            value: signal.similarity || 0,
+                          })
+                        ) || []
+                      }
+                    />
+                  </div>
+                )}
 
                 {result?.result ? (
                   <>
