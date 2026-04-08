@@ -1,3 +1,17 @@
+.button-primary {
+  transition: opacity 0.2s ease;
+}
+.button-primary:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.button-secondary {
+  transition: background 0.2s ease;
+}
+.button-secondary:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
 .card-section {
   margin-top: 24px;
   padding-bottom: 24px;

@@ -155,8 +155,9 @@ export default function DashboardPage() {
         ...prev,
       ].slice(0, 12));
     } catch {
-      setError("Something went wrong while running the experiment.");
+      setError("Failed to run experiment. Please try again.");
       setResult(null);
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }

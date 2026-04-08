@@ -539,6 +539,19 @@ body::before {
   transform: scale(1.02);
   box-shadow:
     0 10px 40px rgba(200,220,255,0.4);
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .button-secondary {

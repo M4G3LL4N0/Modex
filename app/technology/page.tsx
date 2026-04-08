@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function TechnologyPage() {
   return (
     <main className="page-shell">
@@ -12,10 +14,10 @@ export default function TechnologyPage() {
           </div>
 
           <nav className="nav-links">
-            <a className="nav-link" href="/">Home</a>
-            <a className="nav-link" href="/technology">Technology</a>
-            <a className="nav-link" href="/investors">Investors</a>
-            <a className="nav-link" href="/dashboard">Dashboard</a>
+            <Link className="nav-link" href="/">Home</Link>
+            <Link className="nav-link" href="/technology">Technology</Link>
+            <Link className="nav-link" href="/portfolio">Portfolio</Link>
+            <Link className="nav-link" href="/dashboard">Dashboard</Link>
           </nav>
         </div>
       </header>
@@ -99,9 +101,9 @@ export default function TechnologyPage() {
         <div className="container footer-row">
           <div>Modex — A Noaerth Ecosystem Venture</div>
           <nav className="nav-links">
-            <a className="nav-link" href="/">Home</a>
-            <a className="nav-link" href="/investors">Investors</a>
-            <a className="nav-link" href="/dashboard">Dashboard</a>
+            <Link className="nav-link" href="/">Home</Link>
+            <Link className="nav-link" href="/portfolio">Portfolio</Link>
+            <Link className="nav-link" href="/dashboard">Dashboard</Link>
           </nav>
         </div>
       </footer>
