@@ -373,7 +373,7 @@ export default function DashboardPage() {
                           (signal, idx) => ({
                             id: signal.id || `signal-${idx}`,
                             label: signal.type || "Signal",
-                            type: "similar",
+                            type: "similar" as const,
                             similarity: signal.similarity || 0,
                           })
                         ) || []),
