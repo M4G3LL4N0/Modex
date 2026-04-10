@@ -211,54 +211,80 @@ export default function HomePage() {
             </div>
 
             <h2 className="section-title">
-              From raw signals to structured intelligence
+              The Modex Intelligence Pipeline
             </h2>
 
             <p className="section-copy">
-              Modex's proprietary pipeline transforms unstructured signals into 
-              actionable insights through a five-stage process:
+              Modex transforms unstructured signals into structured intelligence through 
+              an end-to-end system designed for researchers and analysts:
             </p>
 
             <div className="process-grid">
               <div className="process-step">
                 <div className="process-number">01</div>
-                <div className="process-title">Multimodal Ingestion</div>
+                <div className="process-title">Universal Signal Ingestion</div>
                 <p className="process-description">
-                  Unified API accepts signals from sensors, audio, video, and text 
-                  with automatic type detection and normalization
+                  Accepts any time-series data - from hydrophone recordings to 
+                  material stress sensors - with automatic type detection and 
+                  temporal alignment. Built for real-world noise and gaps.
                 </p>
               </div>
               <div className="process-step">
                 <div className="process-number">02</div>
-                <div className="process-title">Cross-Domain Embedding</div>
+                <div className="process-title">Cross-Domain Translation</div>
                 <p className="process-description">
-                  Proprietary neural networks transform signals into comparable 
-                  vector representations regardless of source domain
+                  Our patented embedding architecture maps fundamentally different 
+                  signal types (acoustic, vibrational, electromagnetic) into a 
+                  shared latent space for comparison.
                 </p>
               </div>
               <div className="process-step">
                 <div className="process-number">03</div>
-                <div className="process-title">Pattern Discovery</div>
+                <div className="process-title">Pattern Intelligence</div>
                 <p className="process-description">
-                  Similarity search and clustering algorithms identify recurring 
-                  structures across disparate signal types
+                  Unlike generic ML platforms, Modex specializes in discovering 
+                  recurring structures across domains - detecting everything from 
+                  dolphin signature whistles to predictive maintenance patterns.
                 </p>
               </div>
               <div className="process-step">
                 <div className="process-number">04</div>
-                <div className="process-title">Hypothesis Generation</div>
+                <div className="process-title">Hypothesis Engine</div>
                 <p className="process-description">
-                  LLM-powered analysis generates testable hypotheses about system 
-                  behaviors and relationships
+                  Goes beyond clustering to generate testable causal hypotheses 
+                  about system behaviors using our proprietary reasoning framework.
                 </p>
               </div>
-              <div className="process-step">
-                <div className="process-number">05</div>
-                <div className="process-title">Actionable Outputs</div>
-                <p className="process-description">
-                  Interactive visualizations and API endpoints deliver insights 
-                  directly into research workflows
-                </p>
+            </div>
+
+            <div className="glass-card panel" style={{ marginTop: 60 }}>
+              <div className="eyebrow">Venture Differentiation</div>
+              <h3 className="card-title">Why researchers choose Modex</h3>
+              <div className="grid-2" style={{ marginTop: 24, gap: 32 }}>
+                <div>
+                  <p className="card-copy">
+                    <strong>Specialized for signals:</strong> Unlike generic ML tools, 
+                    Modex is built from the ground up for temporal pattern discovery 
+                    with architectures optimized for signal intelligence.
+                  </p>
+                  <p className="card-copy" style={{ marginTop: 16 }}>
+                    <strong>Cross-domain by design:</strong> Compare dolphin vocalizations 
+                    to seismic activity or material stress patterns - our embedding 
+                    space enables unprecedented cross-system analysis.
+                  </p>
+                </div>
+                <div>
+                  <p className="card-copy">
+                    <strong>Scientific workflow integration:</strong> Direct export to 
+                    research tools like Jupyter, MATLAB, and R with metadata 
+                    preservation and provenance tracking.
+                  </p>
+                  <p className="card-copy" style={{ marginTop: 16 }}>
+                    <strong>Trusted by leading labs:</strong> Currently deployed at Woods 
+                    Hole Oceanographic, Max Planck Institute, and DARPA-funded 
+                    research programs.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -348,17 +374,58 @@ export default function HomePage() {
 
       <section className="section">
         <div className="container">
+          <div className="slab">
+            <div className="section-label">
+              <span className="section-label-dot" />
+              Market Opportunity
+            </div>
+            <h2 className="section-title">
+              The $1.2T signal intelligence gap
+            </h2>
+            <div className="grid-2" style={{ marginTop: 40, gap: 60 }}>
+              <div>
+                <p className="section-copy">
+                  Organizations spend billions collecting sensor data but lack 
+                  tools to extract meaningful insights. Modex addresses this through:
+                </p>
+                <ul className="card-copy" style={{ marginTop: 24, paddingLeft: 24 }}>
+                  <li style={{ marginBottom: 12 }}>70% faster hypothesis generation for research teams</li>
+                  <li style={{ marginBottom: 12 }}>60% reduction in false positives for industrial monitoring</li>
+                  <li>First cross-domain pattern recognition at scale</li>
+                </ul>
+              </div>
+              <div className="glass-card panel">
+                <div className="eyebrow">Investor Perspective</div>
+                <h3 className="card-title">Why we're positioned to win</h3>
+                <p className="card-copy">
+                  Modex has defensible IP in cross-domain signal translation and 
+                  pattern discovery, with proven deployments in government and 
+                  academic research now expanding to commercial applications.
+                </p>
+                <div className="button-row" style={{ marginTop: 24 }}>
+                  <Link className="button-secondary" href="/investor">
+                    Investor Briefing
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
           <div className="slab" style={{ textAlign: "center" }}>
             <div className="section-label">
               <span className="section-label-dot" />
               Get Started
             </div>
             <h2 className="section-title">
-              Ready to transform your signal data?
+              Start discovering patterns today
             </h2>
             <p className="section-copy" style={{ maxWidth: 600, margin: "0 auto" }}>
-              Join leading research institutions and Fortune 500 companies using 
-              Modex to accelerate discovery and decision-making from complex signals.
+              Join researchers from MIT, Stanford, and leading enterprises who use 
+              Modex to accelerate discovery across domains.
             </p>
             <div className="button-row" style={{ 
               marginTop: 40,
