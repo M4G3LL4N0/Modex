@@ -785,6 +785,25 @@ body::before {
   margin-top: 16px;
 }
 
+/* Graph Visualization */
+svg {
+  width: 100%;
+  height: 100%;
+}
+
+circle {
+  transition: r 0.2s ease, fill 0.2s ease;
+}
+
+circle:hover {
+  r: 14;
+  fill: #ffb088;
+}
+
+text {
+  pointer-events: none;
+}
+
 /* ===== RESPONSIVE ===== */
 
 @media (max-width: 900px) {
