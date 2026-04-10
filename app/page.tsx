@@ -214,23 +214,63 @@ export default function HomePage() {
               <div className="process-step">
                 <div className="process-number">01</div>
                 <div className="process-title">Ingest</div>
+                <p className="process-description">
+                  Collect raw signals from any source - sensors, audio, video, or text
+                </p>
               </div>
               <div className="process-step">
                 <div className="process-number">02</div>
                 <div className="process-title">Embed</div>
+                <p className="process-description">
+                  Transform signals into high-dimensional embeddings using our ML models
+                </p>
               </div>
               <div className="process-step">
                 <div className="process-number">03</div>
                 <div className="process-title">Compare</div>
+                <p className="process-description">
+                  Measure similarity between signals across any domain or system
+                </p>
               </div>
               <div className="process-step">
                 <div className="process-number">04</div>
                 <div className="process-title">Cluster</div>
+                <p className="process-description">
+                  Detect recurring patterns and group similar signals automatically
+                </p>
               </div>
               <div className="process-step">
                 <div className="process-number">05</div>
                 <div className="process-title">Hypothesize</div>
+                <p className="process-description">
+                  Generate testable hypotheses about system behaviors and relationships
+                </p>
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="slab">
+            <div className="section-label">
+              <span className="section-label-dot" />
+              Get Started
+            </div>
+            <h2 className="section-title">
+              Start discovering patterns today
+            </h2>
+            <p className="section-copy">
+              Join researchers and enterprises using Modex to uncover insights from complex systems.
+            </p>
+            <div className="button-row" style={{ marginTop: 40 }}>
+              <Link className="button-primary" href="/dashboard">
+                Launch Experiments
+              </Link>
+              <Link className="button-secondary" href="/technology">
+                Learn How It Works
+              </Link>
             </div>
           </div>
         </div>
