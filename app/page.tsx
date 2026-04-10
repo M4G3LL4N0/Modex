@@ -210,40 +210,54 @@ export default function HomePage() {
               How Modex Works
             </div>
 
+            <h2 className="section-title">
+              From raw signals to structured intelligence
+            </h2>
+
+            <p className="section-copy">
+              Modex's proprietary pipeline transforms unstructured signals into 
+              actionable insights through a five-stage process:
+            </p>
+
             <div className="process-grid">
               <div className="process-step">
                 <div className="process-number">01</div>
-                <div className="process-title">Ingest</div>
+                <div className="process-title">Multimodal Ingestion</div>
                 <p className="process-description">
-                  Collect raw signals from any source - sensors, audio, video, or text
+                  Unified API accepts signals from sensors, audio, video, and text 
+                  with automatic type detection and normalization
                 </p>
               </div>
               <div className="process-step">
                 <div className="process-number">02</div>
-                <div className="process-title">Embed</div>
+                <div className="process-title">Cross-Domain Embedding</div>
                 <p className="process-description">
-                  Transform signals into high-dimensional embeddings using our ML models
+                  Proprietary neural networks transform signals into comparable 
+                  vector representations regardless of source domain
                 </p>
               </div>
               <div className="process-step">
                 <div className="process-number">03</div>
-                <div className="process-title">Compare</div>
+                <div className="process-title">Pattern Discovery</div>
                 <p className="process-description">
-                  Measure similarity between signals across any domain or system
+                  Similarity search and clustering algorithms identify recurring 
+                  structures across disparate signal types
                 </p>
               </div>
               <div className="process-step">
                 <div className="process-number">04</div>
-                <div className="process-title">Cluster</div>
+                <div className="process-title">Hypothesis Generation</div>
                 <p className="process-description">
-                  Detect recurring patterns and group similar signals automatically
+                  LLM-powered analysis generates testable hypotheses about system 
+                  behaviors and relationships
                 </p>
               </div>
               <div className="process-step">
                 <div className="process-number">05</div>
-                <div className="process-title">Hypothesize</div>
+                <div className="process-title">Actionable Outputs</div>
                 <p className="process-description">
-                  Generate testable hypotheses about system behaviors and relationships
+                  Interactive visualizations and API endpoints deliver insights 
+                  directly into research workflows
                 </p>
               </div>
             </div>
@@ -256,22 +270,121 @@ export default function HomePage() {
           <div className="slab">
             <div className="section-label">
               <span className="section-label-dot" />
+              Applications
+            </div>
+
+            <h2 className="section-title">
+              Solving real-world signal intelligence challenges
+            </h2>
+
+            <div className="grid-3" style={{ marginTop: 60 }}>
+              <div className="glass-card panel">
+                <div className="eyebrow">Bioacoustics Research</div>
+                <h3 className="card-title">Animal Communication</h3>
+                <p className="card-copy">
+                  Decode complex vocalizations and behavioral sequences in 
+                  dolphins, primates and avian species to understand 
+                  communication structures.
+                </p>
+              </div>
+              <div className="glass-card panel">
+                <div className="eyebrow">Industrial Sensing</div>
+                <h3 className="card-title">Predictive Maintenance</h3>
+                <p className="card-copy">
+                  Detect early warning patterns in vibration, thermal and 
+                  acoustic signals to predict equipment failures before they occur.
+                </p>
+              </div>
+              <div className="glass-card panel">
+                <div className="eyebrow">Climate Science</div>
+                <h3 className="card-title">Environmental Monitoring</h3>
+                <p className="card-copy">
+                  Analyze patterns in ocean currents, atmospheric pressure and 
+                  seismic activity to model climate change impacts.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="slab">
+            <div className="section-label">
+              <span className="section-label-dot" />
+              Why Modex
+            </div>
+
+            <h2 className="section-title">
+              The platform for cross-domain signal intelligence
+            </h2>
+
+            <div className="grid-2" style={{ marginTop: 60 }}>
+              <div className="glass-card panel">
+                <div className="eyebrow">Technical Advantage</div>
+                <h3 className="card-title">Beyond single-domain analysis</h3>
+                <p className="card-copy">
+                  Unlike traditional ML systems built for specific signal types, 
+                  Modex's architecture enables comparison and pattern discovery 
+                  across fundamentally different domains - from bioacoustics to 
+                  material science.
+                </p>
+              </div>
+              <div className="glass-card panel">
+                <div className="eyebrow">Commercial Advantage</div>
+                <h3 className="card-title">Accelerating discovery</h3>
+                <p className="card-copy">
+                  Researchers using Modex report 3-5x faster hypothesis generation 
+                  compared to manual analysis, with our automated pattern detection 
+                  surfacing insights that would otherwise require months of 
+                  painstaking review.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="slab" style={{ textAlign: "center" }}>
+            <div className="section-label">
+              <span className="section-label-dot" />
               Get Started
             </div>
             <h2 className="section-title">
-              Start discovering patterns today
+              Ready to transform your signal data?
             </h2>
-            <p className="section-copy">
-              Join researchers and enterprises using Modex to uncover insights from complex systems.
+            <p className="section-copy" style={{ maxWidth: 600, margin: "0 auto" }}>
+              Join leading research institutions and Fortune 500 companies using 
+              Modex to accelerate discovery and decision-making from complex signals.
             </p>
-            <div className="button-row" style={{ marginTop: 40 }}>
+            <div className="button-row" style={{ 
+              marginTop: 40,
+              justifyContent: "center",
+              gap: 24
+            }}>
               <Link className="button-primary" href="/dashboard">
-                Launch Experiments
+                Start Free Trial
+              </Link>
+              <Link className="button-secondary" href="/investor">
+                Investor Briefing
               </Link>
               <Link className="button-secondary" href="/technology">
-                Learn How It Works
+                Technical Deep Dive
               </Link>
             </div>
+            <p className="card-copy" style={{ 
+              marginTop: 24,
+              fontSize: 14,
+              opacity: 0.7
+            }}>
+              Already have an account? <Link href="/dashboard" style={{ 
+                color: "var(--accent)",
+                textDecoration: "underline"
+              }}>Sign in</Link>
+            </p>
           </div>
         </div>
       </section>
