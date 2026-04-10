@@ -47,16 +47,22 @@ export default function HomePage() {
             </div>
 
             <h1 className="hero-title">
-              Discover hidden patterns
+              Decode complex systems
               <br />
-              across real-world systems.
+              through signal intelligence
             </h1>
 
             <p className="hero-copy">
-              Modex is an experimental machine learning platform for ingesting
-              signals, embedding them, comparing them, clustering them, and
-              generating early hypotheses across complex domains.
+              Modex helps researchers and enterprises uncover actionable insights 
+              from unstructured signals across animal, fluid, material, and unknown 
+              systems - accelerating discovery and decision-making.
             </p>
+
+            <div className="value-prop">
+              <div className="value-prop-text">
+                Turn unstructured signals into structured intelligence
+              </div>
+            </div>
 
             <div className="button-row hero-actions">
               <Link className="button-primary" href="/dashboard">
@@ -69,25 +75,43 @@ export default function HomePage() {
           </div>
 
           <div className="hero-panel glass-card panel-lg">
-            <div className="eyebrow">System Preview</div>
-            <h2 className="card-title">Modex Core</h2>
+            <div className="eyebrow">Product Overview</div>
+            <h2 className="card-title">The Modex Pipeline</h2>
             <p className="card-copy">
-              Ingest signals. Embed structure. Compare relationships. Detect
-              clusters. Generate hypotheses.
+              A complete workflow for signal intelligence - from raw data to 
+              actionable insights.
             </p>
 
-            <div className="metric-list">
-              <div className="metric-item">
-                <span className="metric-label">Signal Ingestion</span>
-                <span className="metric-value">Active</span>
+            <div className="pipeline-steps">
+              <div className="pipeline-step">
+                <div className="step-number">1</div>
+                <div className="step-content">
+                  <div className="step-title">Signal Collection</div>
+                  <div className="step-description">
+                    Ingest diverse signals from sensors, audio, video, and 
+                    unstructured text
+                  </div>
+                </div>
               </div>
-              <div className="metric-item">
-                <span className="metric-label">Embedding Layer</span>
-                <span className="metric-value">64-dim</span>
+              <div className="pipeline-step">
+                <div className="step-number">2</div>
+                <div className="step-content">
+                  <div className="step-title">Pattern Extraction</div>
+                  <div className="step-description">
+                    Transform raw signals into structured embeddings using 
+                    proprietary ML models
+                  </div>
+                </div>
               </div>
-              <div className="metric-item">
-                <span className="metric-label">Pattern Discovery</span>
-                <span className="metric-value">Enabled</span>
+              <div className="pipeline-step">
+                <div className="step-number">3</div>
+                <div className="step-content">
+                  <div className="step-title">Insight Generation</div>
+                  <div className="step-description">
+                    Detect patterns, clusters, and anomalies to generate 
+                    actionable hypotheses
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -99,18 +123,34 @@ export default function HomePage() {
           <div className="slab">
             <div className="section-label">
               <span className="section-label-dot" />
-              Core Thesis
+              Market Context
             </div>
 
             <h2 className="section-title">
-              A platform for learning the structure of reality.
+              Why signal intelligence matters now
             </h2>
 
             <p className="section-copy">
-              Modex is built to study unknown and partially understood systems by
-              turning raw signals into structured representations that can be
-              compared, grouped, and explored computationally.
+              With the explosion of IoT devices, sensors, and unstructured data, 
+              organizations are drowning in signals but starved for insights. 
+              Modex provides the missing layer to transform this data deluge 
+              into competitive advantage.
             </p>
+
+            <div className="market-stats">
+              <div className="market-stat">
+                <div className="stat-value">+40%</div>
+                <div className="stat-label">Annual growth in sensor data</div>
+              </div>
+              <div className="market-stat">
+                <div className="stat-value">$1.6T</div>
+                <div className="stat-label">Potential value from IoT analytics</div>
+              </div>
+              <div className="market-stat">
+                <div className="stat-value">80%</div>
+                <div className="stat-label">Of data remains unstructured</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
