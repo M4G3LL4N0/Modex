@@ -800,6 +800,47 @@ body::before {
   gap: 20px;
 }
 
+.process-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px;
+  margin-top: 48px;
+}
+
+.process-step {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.process-number {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.process-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+}
+
+.process-description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .process-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
 .history-list {
   display: flex;
   flex-direction: column;
